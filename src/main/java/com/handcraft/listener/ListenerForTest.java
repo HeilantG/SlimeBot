@@ -8,12 +8,13 @@ import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.util.MsgCreate;
+import org.springframework.stereotype.Component;
 
 /**
  * @author HeilantG
- * groupId = "816924822"
+ * groupId = "190375193"
  */
-@Beans
+@Component
 public class ListenerForTest {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
 

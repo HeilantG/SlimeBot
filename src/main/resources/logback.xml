@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--日志格式-->
-<!-- spirng boot 默认使用logback，默认会读取resources文件夹下的名为logback.xml的文件  zhangyu 20180807-->
+<!-- spirng boot 默认使用logback，默认会读取resources文件夹下的名为logback.xml的文件 -->
 <configuration debug="false">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
  <!--   <property name="LOG_HOME" value="C:/loghome" />-->

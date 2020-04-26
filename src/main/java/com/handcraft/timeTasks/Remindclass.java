@@ -1,4 +1,4 @@
-package com.handcraft.scheduledTasks;
+package com.handcraft.timeTasks;
 
 import com.forte.qqrobot.anno.timetask.CronTask;
 import com.forte.qqrobot.beans.cqcode.CQCode;
@@ -21,7 +21,7 @@ public class Remindclass implements TimeJob {
         sender.SENDER.sendGroupMsg("816924822", cqCode_atAll.toString() +
                 "还有三十分钟就要上课啦,各组准备开始查人");
         DelaySender delaySender = new DelaySender(sender.SENDER, 900);
-        delaySender.sendGroupMsg("816924822",cqCode_atAll.toString() +
+        delaySender.sendGroupMsg("816924822", cqCode_atAll.toString() +
                 "还有十五分钟就要上课啦 赶紧去腾讯会议报道, 赶紧去腾讯会议报道,苏哥说他抖音想涨粉了");
     }
 }

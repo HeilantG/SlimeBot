@@ -8,13 +8,14 @@ import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
+import org.springframework.stereotype.Component;
 
 /**
  * @author HeilantG
  * 这是挥手的专用监听器
  * groupId = "361081715";
  */
-@Beans
+@Component
 public class ListenerForHuiShou {
 
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();

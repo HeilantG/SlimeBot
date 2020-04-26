@@ -2,24 +2,64 @@ package com.handcraft.listener;
 
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
-import com.forte.qqrobot.anno.depend.Beans;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
+import com.handcraft.Mapper.ImgMapper;
+import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.MsgCreate;
+import com.handcraft.util.StringUtil;
 import com.simplerobot.modules.delay.DelaySender;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author HeilantG
  * 自用私聊测试
  */
-@Beans
+@Component
 public class ListenerForAdmin {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+    @Autowired
+    ImgMapper imgMapper;
+    @Autowired
+    PixivMsg pixivMsg;
+    @Autowired
+    StringUtil stringUtil;
+
+    @Listen(MsgGetTypes.privateMsg)
+    @Filter(code = {"1310147115"}, value = {"获取今日"})
+    public void getImg(PrivateMsg msg, MsgSender sender) {
+        List<ImgInfo> day = pixivMsg.getDay();
+        for (ImgInfo imgInfo : day) {
+            imgMapper.addImg(imgInfo);
+        }
+        sender.SENDER.sendPrivateMsg(msg, "获取完毕,已保存如数据库");
+    }
+
+    @Listen(MsgGetTypes.privateMsg)
+    @Filter(code = {"1310147115"}, value = {"显示今日"})
+    public void selectImg(PrivateMsg msg, MsgSender sender) {
+
+        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
+        for (ImgInfo imgInfo : imgInfos) {
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
+            System.out.println(cqCode_image.toString());
+            try {
+                sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
+            } catch (Exception e) {
+                continue;
+            }
+        }
+    }
+
+
     //本地图片测试
 
     @Listen(MsgGetTypes.privateMsg)
@@ -28,6 +68,8 @@ public class ListenerForAdmin {
         System.out.println(msg);
         CQCode cqCode_image = cqCodeUtil.getCQCode_Image("1.jpg");
         sender.SENDER.sendPrivateMsg("1310147115", cqCode_image.toString());
+        sender.SENDER.sendPrivateMsg("1310147115", "file://E:\\一些东西\\乱七八杂\\1.jpg");
+
     }
 
 
@@ -35,7 +77,8 @@ public class ListenerForAdmin {
     @Filter(code = {"1310147115"}, value = {"a.*"})
     public void img(PrivateMsg msg, MsgSender sender) {
         StringBuffer str = new StringBuffer();
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image("http://image.imufu.cn/forum/201204/28/195258jmwwpvw48zcjmdj8.jpg");
+        //CQCode cqCode_image = cqCodeUtil.getCQCode_Image("http://image.imufu.cn/forum/201204/28/195258jmwwpvw48zcjmdj8.jpg");
+        CQCode cqCode_image = cqCodeUtil.getCQCode_Image("aa31847d2f667914c34d2c223a53d1fc.jpg");
         sender.SENDER.sendPrivateMsg("1310147115", cqCode_image.toString());
     }
 
@@ -78,7 +121,6 @@ public class ListenerForAdmin {
                 "还有十五分钟就要上课啦 赶紧去腾讯会议报道, 赶紧去腾讯会议报道,苏哥说他抖音想涨粉了");
 
     }
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.handcraft.scheduledTasks;
+package com.handcraft.timeTasks;
 
 import com.forte.qqrobot.anno.timetask.CronTask;
 import com.forte.qqrobot.sender.MsgSender;
