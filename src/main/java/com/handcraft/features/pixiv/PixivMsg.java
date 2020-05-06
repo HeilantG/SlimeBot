@@ -33,14 +33,19 @@ public class PixivMsg {
         // 第二次取值
         String substring = code.substring(1, code.length() - 1);
         JSONObject jsonObject = JSONObject.parseObject(substring);
-        return jsonObject.getString("url");
+        String imgUrl = jsonObject.getString("url");
+        imgUrl = imgUrl.replace("i.pixiv.cat", "www.pixivdl.net");
+        return imgUrl;
     }
 
-    //日图
+    /**
+     * 获取日图
+     */
     public List<ImgInfo> getDay() {
         List<ImgInfo> imgInfos = new ArrayList<>();
-        //获取信息
-        String url = "https://api.pixivic.com/ranks?page=1&date=2020-04-23&mode=day&pageSize=10";
+        //获取三天前日期 拼接进字符串
+        String date = stringUtil.formatDate(stringUtil.getDesignatedDate(-3));
+        String url = "https://api.pixivic.com/ranks?page=1&date=" + date + "&mode=day&pageSize=10";
         String str = msgCreate.okHttpGetMethod(url);
         JSONObject jsonObject = JSON.parseObject(str);
         JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -56,14 +61,19 @@ public class PixivMsg {
             // imgUrl
             JSONArray imageUrls = imgInfo.getJSONArray("imageUrls");
             JSONObject imgObj = imageUrls.getJSONObject(0);
-            String large = imgObj.getString("large");
-            large = large.replace("i.pximg.net", "i.pixiv.cat");
+            String large = imgObj.getString("original");
+            large = large.replace("i.pximg.net", "www.pixivdl.net");
             img.setImageUrl(large);
             StringBuffer tagInfo = new StringBuffer();
             // tag 获取
             JSONArray tags = imgInfo.getJSONArray("tags");
+            int i = 0;
             for (Object tag : tags) {
                 tagInfo.append(JSON.parseObject(tag.toString()).getString("translatedName") + " ");
+                i++;
+                if (i == 3) {
+                    break;
+                }
             }
             img.setTags(tagInfo.toString());
             imgInfos.add(img);

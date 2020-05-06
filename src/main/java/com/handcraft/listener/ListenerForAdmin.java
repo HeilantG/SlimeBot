@@ -53,7 +53,6 @@ public class ListenerForAdmin {
         List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
-            System.out.println(cqCode_image.toString());
             try {
                 sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
             } catch (Exception e) {
@@ -67,7 +66,6 @@ public class ListenerForAdmin {
 
     @Filter(code = {"1310147115"}, value = {"img.*"})
     public void imgTest(PrivateMsg msg, MsgSender sender) {
-        System.out.println(msg);
         CQCode cqCode_image = cqCodeUtil.getCQCode_Image("1.jpg");
         sender.SENDER.sendPrivateMsg("1310147115", cqCode_image.toString());
         sender.SENDER.sendPrivateMsg("1310147115", "file://E:\\一些东西\\乱七八杂\\1.jpg");
@@ -107,17 +105,6 @@ public class ListenerForAdmin {
         delaySender.sendPrivateMsg(msg.getQQCode(), "10秒后： " + msg.getMsg());
         // 用原本的sender先直接发送一个消息
         sender.SENDER.sendPrivateMsg(msg.getQQCode(), "直接发送： " + msg.getMsg());
-    }
-
-    @Filter(code = {"1310147115"}, value = {"上课"})
-    public void testSk(PrivateMsg msg, MsgSender sender) {
-        CQCode cqCode_atAll = cqCodeUtil.getCQCode_AtAll();
-        sender.SENDER.sendPrivateMsg("1310147115", cqCode_atAll.toString() +
-                "还有三十分钟就要上课啦,各组准备开始查人");
-        DelaySender delaySender = new DelaySender(sender.SENDER, 900);
-        delaySender.sendPrivateMsg("1310147115", cqCode_atAll.toString() +
-                "还有十五分钟就要上课啦 赶紧去腾讯会议报道, 赶紧去腾讯会议报道,苏哥说他抖音想涨粉了");
-
     }
 
 

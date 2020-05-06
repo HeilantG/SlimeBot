@@ -1,31 +1,37 @@
 package com.handcraft.timeTasks;
 
-import com.forte.qqrobot.anno.timetask.CronTask;
 import com.forte.qqrobot.beans.cqcode.CQCode;
-import com.forte.qqrobot.sender.MsgSender;
-import com.forte.qqrobot.timetask.TimeJob;
+import com.forte.qqrobot.bot.BotManager;
+import com.forte.qqrobot.bot.BotSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.mapper.ImgMapper;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.pojo.ImgInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.handcraft.util.MsgCreate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 // 每早定时获取P站日图
 
 @Component
-@CronTask("0 0 6 ? * * *")
-public class GetPixivDayImg implements TimeJob {
+@EnableScheduling
+public class GetPixivDayImg {
     CQCodeUtil cqCodeUtil = CQCodeUtil.build();
-    @Autowired
+    @Resource
     PixivMsg pixivMsg;
-    @Autowired
-    ImgMapper imgMapper;
+    @Resource
+    MsgCreate msgCreate;
+    /**
+     * 自定义送信器
+     */
+    @Resource
+    private BotManager botManager;
 
-    @Override
-    public void execute(MsgSender msgSender, CQCodeUtil cqCodeUtil) {
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void dayImg() {
         List<ImgInfo> day = pixivMsg.getDay();
         //存入数据库
         for (int i = 0; i < day.size(); i++) {
@@ -33,8 +39,10 @@ public class GetPixivDayImg implements TimeJob {
         }
         //预下载
         for (ImgInfo imgInfo : day) {
+            BotSender sender = botManager.defaultBot().getSender();
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
-            msgSender.SENDER.sendGroupMsg("190375193", cqCode_image.toString() + imgInfo.getId());
+            sender.SENDER.sendGroupMsg("190375193", cqCode_image.toString() + imgInfo.getId());
         }
     }
+
 }

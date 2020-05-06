@@ -32,7 +32,9 @@ public class RemindClass {
     ClassInfoService classInfoService;
     @Resource
     MsgCreate msgCreate;
-    /*自定义送信器*/
+    /**
+     * 自定义送信器
+     */
     @Resource
     private BotManager botManager;
 

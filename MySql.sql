@@ -24,3 +24,4 @@ create table classInfo
     `endTime`   TIME COMMENT '结束时间',
     `teacher`   varchar(10) COMMENT '授课老师'
 );
+alter table imginfo convert to character set utf8mb4 collate utf8mb4_bin;
