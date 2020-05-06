@@ -9,6 +9,7 @@ import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,8 @@ public class ListenerAllprivate {
     MsgCreate msgCreate;
     @Resource
     PixivMsg pixivMsg;
+    @Resource
+    ImgDownload imgDownload;
     @Resource
     CreateTianGouMsg createTianGouMsg;
     //老黄历
@@ -40,11 +43,22 @@ public class ListenerAllprivate {
     @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"来.*涩图"})
     public void setu(PrivateMsg msg, MsgSender sender) {
-        System.out.println(msg.getQQ() + msg.getId() + "请求了色图bot");
+        //System.out.println(msg.getQQ() + msg.getId() + "请求了色图bot");
         sender.SENDER.sendPrivateMsg(msg, "开始定位涩图,可能因网络原因略有延迟(如果太久没消息就是挂了");
         String s = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
         CQCode cqCode_image = cqCodeUtil.getCQCode_Image(s);
-        sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
+        //System.out.println("开始下载");
+
+        /*
+         * local:
+         * C:\Users\HeilantG\Desktop\酷Q Pro\data\image\
+         * Server:
+         * C:\Users\Administrator\Desktop\酷Q Pro\data\image\
+         * */
+        String localUrl = imgDownload.download(s, "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\");
+        String cqCodeLocal = cqCodeUtil.getCQCode_Image(localUrl + ".jpg").toString();
+        // System.out.println(cqCodeLocal);
+        sender.SENDER.sendPrivateMsg(msg, cqCodeLocal);
     }
 
     //天狗模式

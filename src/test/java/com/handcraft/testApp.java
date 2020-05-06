@@ -1,22 +1,20 @@
 package com.handcraft;
 
-import com.handcraft.util.MsgCreate;
-import com.handcraft.util.StringUtil;
+import com.forte.qqrobot.utils.CQCodeUtil;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
+import java.io.IOException;
 
 @SpringBootTest
 public class testApp {
     @Test
-    public void dateFormat() {
-     /*   Date dt = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(sdf.format(dt));*/
-        StringUtil stringUtil = new StringUtil();
-        MsgCreate msgCreate = new MsgCreate();
-        System.out.println(msgCreate.getProgrammerCalendar(1));
+    public void dateFormat() throws IOException {
+        CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+
+        String string = cqCodeUtil.getCQCode_Image("C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\1ef67ed8777540b28c85697d06c7ce53.jpg").toString();
+        System.out.println(string);
+
     }
 
 }

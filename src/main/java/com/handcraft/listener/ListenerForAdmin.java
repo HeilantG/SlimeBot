@@ -7,9 +7,10 @@ import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.mapper.ImgMapper;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
+import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
 import com.simplerobot.modules.delay.DelaySender;
@@ -36,6 +37,9 @@ public class ListenerForAdmin {
     StringUtil stringUtil;
     @Resource
     MsgCreate msgCreate;
+    @Resource
+    ImgDownload imgDownload;
+
 
     @Filter(code = {"1310147115"}, value = {"获取今日"})
     public void getImg(PrivateMsg msg, MsgSender sender) {
@@ -43,7 +47,16 @@ public class ListenerForAdmin {
         for (ImgInfo imgInfo : day) {
             imgMapper.addImg(imgInfo);
         }
-        sender.SENDER.sendPrivateMsg(msg, "获取完毕,已保存如数据库");
+        sender.SENDER.sendPrivateMsg(msg, "获取完毕,已保存如数据库,预下载开始");
+        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
+        for (ImgInfo imgInfo : imgInfos) {
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
+            try {
+
+            } catch (Exception e) {
+                continue;
+            }
+        }
     }
 
 
