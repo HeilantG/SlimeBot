@@ -7,7 +7,7 @@ import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.Mapper.ImgMapper;
+import com.handcraft.mapper.ImgMapper;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.MsgCreate;
@@ -16,6 +16,7 @@ import com.simplerobot.modules.delay.DelaySender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author HeilantG
  * 自用私聊测试
  */
+@Listen(MsgGetTypes.privateMsg)
 @Component
 public class ListenerForAdmin {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
@@ -32,8 +34,9 @@ public class ListenerForAdmin {
     PixivMsg pixivMsg;
     @Autowired
     StringUtil stringUtil;
+    @Resource
+    MsgCreate msgCreate;
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"获取今日"})
     public void getImg(PrivateMsg msg, MsgSender sender) {
         List<ImgInfo> day = pixivMsg.getDay();
@@ -43,7 +46,7 @@ public class ListenerForAdmin {
         sender.SENDER.sendPrivateMsg(msg, "获取完毕,已保存如数据库");
     }
 
-    @Listen(MsgGetTypes.privateMsg)
+
     @Filter(code = {"1310147115"}, value = {"显示今日"})
     public void selectImg(PrivateMsg msg, MsgSender sender) {
 
@@ -62,7 +65,6 @@ public class ListenerForAdmin {
 
     //本地图片测试
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"img.*"})
     public void imgTest(PrivateMsg msg, MsgSender sender) {
         System.out.println(msg);
@@ -73,7 +75,6 @@ public class ListenerForAdmin {
     }
 
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"a.*"})
     public void img(PrivateMsg msg, MsgSender sender) {
         StringBuffer str = new StringBuffer();
@@ -85,16 +86,14 @@ public class ListenerForAdmin {
 
     //今日新闻
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"hello.*"})
     public void today(PrivateMsg privateMsg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg("1310147115", MsgCreate.getDayMsg());
+        sender.SENDER.sendPrivateMsg("1310147115", msgCreate.getDayMsg());
         sender.SENDER.sendPrivateMsg("1310147115", " cqCode_image.toString()");
     }
 
     //延时消息
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"延时"})
     public void testYs(PrivateMsg msg, MsgSender sender) {
         DelaySender delaySender = new DelaySender(sender.SENDER, 2);
@@ -110,7 +109,6 @@ public class ListenerForAdmin {
         sender.SENDER.sendPrivateMsg(msg.getQQCode(), "直接发送： " + msg.getMsg());
     }
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(code = {"1310147115"}, value = {"上课"})
     public void testSk(PrivateMsg msg, MsgSender sender) {
         CQCode cqCode_atAll = cqCodeUtil.getCQCode_AtAll();

@@ -10,6 +10,8 @@ import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.util.MsgCreate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * @author HeilantG
  * groupId = "190375193"
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListenerForTest {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+    @Resource
+    MsgCreate msgCreate;
 
  /*   @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"emj.*"}, group = {"190375193"})
@@ -28,6 +32,6 @@ public class ListenerForTest {
     @Listen(MsgGetTypes.groupMsg)
     @Filter(group = {"190375193"}, value = {"hello.*"})
     public void today(GroupMsg groupMsg, MsgSender sender) {
-        String msg = MsgCreate.getDayMsg();
+        String msg = msgCreate.getDayMsg();
     }
 }

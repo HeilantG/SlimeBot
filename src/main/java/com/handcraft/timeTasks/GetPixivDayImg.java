@@ -5,7 +5,7 @@ import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.timetask.TimeJob;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.Mapper.ImgMapper;
+import com.handcraft.mapper.ImgMapper;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.pojo.ImgInfo;
 import org.springframework.beans.factory.annotation.Autowired;

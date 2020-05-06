@@ -9,6 +9,7 @@ import com.handcraft.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,15 @@ public class PixivMsg {
     @Autowired
     StringUtil stringUtil;
 
+    @Resource
+    MsgCreate msgCreate;
+
     // 获取涩图
-    public static String getSeTu(String key, int r18) {
+    public String getSeTu(String key, int r18) {
         String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true";
         //处理信息
         // 第一次取值
-        JSONObject obj = JSONObject.parseObject(MsgCreate.httpGetMethod(url));
+        JSONObject obj = JSONObject.parseObject(msgCreate.okHttpGetMethod(url));
         String code = obj.getString("data");
         // 第二次取值
         String substring = code.substring(1, code.length() - 1);
@@ -37,7 +41,7 @@ public class PixivMsg {
         List<ImgInfo> imgInfos = new ArrayList<>();
         //获取信息
         String url = "https://api.pixivic.com/ranks?page=1&date=2020-04-23&mode=day&pageSize=10";
-        String str = MsgCreate.httpGetMethod(url);
+        String str = msgCreate.okHttpGetMethod(url);
         JSONObject jsonObject = JSON.parseObject(str);
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         //处理信息

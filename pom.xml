@@ -10,15 +10,28 @@
     </parent>
     <groupId>com.handcraft</groupId>
     <artifactId>slimebot</artifactId>
-    <version>1.0-201</version>
+    <version>1.1-102</version>
     <name>slimebot</name>
-    <description>Demo project for Spring Boot</description>
+    <description>CoolQ bot plugin</description>
 
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
+        <!--okHttp https://github.com/square/okhttp/-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+
+        <!--延时任务-->
+        <dependency>
+            <groupId>io.github.ForteScarlet.simple-robot-module</groupId>
+            <artifactId>mod-delay-task</artifactId>
+            <version>1.0-1.11</version>
+        </dependency>
 
         <!--mybatis spring boot 整合-->
         <dependency>
@@ -32,10 +45,17 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!--junit-->
@@ -90,21 +110,21 @@
             </plugin>
 
             <!--mvn package assembly:single-->
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5.5</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.handcraft.SlimeBotRunApplication</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>-->
+            <!-- <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-assembly-plugin</artifactId>
+                 <version>2.5.5</version>
+                 <configuration>
+                     <archive>
+                         <manifest>
+                             <mainClass>com.handcraft.SlimeBotRunApplication</mainClass>
+                         </manifest>
+                     </archive>
+                     <descriptorRefs>
+                         <descriptorRef>jar-with-dependencies</descriptorRef>
+                     </descriptorRefs>
+                 </configuration>
+             </plugin>-->
             <!--语言级别-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,6 +136,8 @@
                 </configuration>
             </plugin>
         </plugins>
+
+
     </build>
 
 </project>

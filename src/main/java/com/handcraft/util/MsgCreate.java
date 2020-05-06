@@ -1,14 +1,10 @@
 package com.handcraft.util;
 
 import com.handcraft.features.programmerCalendar.ProgrammerCalendar;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -17,9 +13,10 @@ import java.util.regex.Pattern;
 
 //信息文本拼接工具
 
+@Component
 public class MsgCreate {
     //每日消息
-    public static String getDayMsg() {
+    public String getDayMsg() {
         // 最终返回的文字
         StringBuilder str = new StringBuilder();
         // 确认今天是周几
@@ -34,11 +31,11 @@ public class MsgCreate {
     }
 
     //老黄历
-    public static String getProgrammerCalendar(int... key) {
+    public String getProgrammerCalendar(int... key) {
         return ProgrammerCalendar.getCalendar(key);
     }
 
-    private static String dayHello(int day) {
+    private String dayHello(int day) {
         StringBuilder str = new StringBuilder();
         String[] arr = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         str.append("各位早上好,今天是");
@@ -50,7 +47,7 @@ public class MsgCreate {
     }
 
 
-    public static String unicodeToString(String str) {
+    public String unicodeToString(String str) {
 
         Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
         Matcher matcher = pattern.matcher(str);
@@ -67,36 +64,18 @@ public class MsgCreate {
         return str;
     }
 
-    public static String httpGetMethod(String url) {
-        try {
-            CloseableHttpClient httpClient = HttpClients.createSystem();
-            // 创建get方法
 
-            HttpGet hg = new HttpGet(url);
-/*
-            // 浏览器表示
-            hg.addHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6)");
-            // 传输的类型
-            hg.addHeader("Content-Type", "application/x-www-form-urlencoded");*/
-            // 超时断开(起码不会卡连接池
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(5000).setConnectionRequestTimeout(5000)
-                    .setSocketTimeout(5000).build();
-            hg.setConfig(requestConfig);
-            //执行请求
-            CloseableHttpResponse resp = httpClient.execute(hg);
-            //获取请求结果的html 实体
-            HttpEntity entity = resp.getEntity();
-            // 使用EntityUtils toString方法将entity转换为String ，编码为gbk
-            String entitString = EntityUtils.toString(entity, "utf-8");
-            return entitString;
+    public String okHttpGetMethod(String url) {
+        OkHttpClient client = new OkHttpClient();
 
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

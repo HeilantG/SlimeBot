@@ -14,6 +14,8 @@ import com.handcraft.util.MsgCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /*
  *  公用监听器
  *  */
@@ -21,14 +23,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListenerAllGroup {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
-
-
+    @Resource
+    MsgCreate msgCreate;
+    @Resource
+    PixivMsg pixivMsg;
+    @Resource
+    CreateTianGouMsg createTianGouMsg;
     //老黄历单独调用
 
     @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"来.*老黄历.*"})
     public void programmerCalendar(GroupMsg msg, MsgSender sender) {
-        String dayMsg = MsgCreate.getProgrammerCalendar(1);
+        String dayMsg = msgCreate.getProgrammerCalendar(1);
         sender.SENDER.sendGroupMsg(msg, dayMsg);
     }
 
@@ -48,7 +54,7 @@ public class ListenerAllGroup {
     public void setu(GroupMsg msg, MsgSender sender) {
         System.out.println(msg.getQQ() + msg.getId() + "请求了色图bot");
         sender.SENDER.sendGroupMsg(msg, "开始定位涩图,可能因网络原因略有延迟(如果太久没回消息就是挂了");
-        String s = PixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
+        String s = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
         CQCode cqCode_image = cqCodeUtil.getCQCode_Image(s);
         sender.SENDER.sendGroupMsg(msg, cqCode_image.toString());
     }
@@ -59,7 +65,7 @@ public class ListenerAllGroup {
     @Filter(value = {"舔我"})
     public void tianGou(GroupMsg msg, MsgSender sender) {
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
-        String str = cqCode_at.toString() + "\n" + CreateTianGouMsg.get();
+        String str = cqCode_at.toString() + "\n" + createTianGouMsg.get();
         sender.SENDER.sendGroupMsg(msg, str);
     }
 }

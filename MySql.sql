@@ -1,5 +1,6 @@
 create database slimebot;
 use slimebot;
+/*pixiv 图片信息表*/
 create table imginfo
 (
     `uuid`     varchar(40) primary key,
@@ -14,3 +15,12 @@ values ('1', '1', '1', '1', '1');
 
 select *
 from imginfo;
+create table classInfo
+(
+    `uuid`      varchar(40) primary key,
+    `name`      varchar(20) COMMENT '名称',
+    `week`      int COMMENT '星期',
+    `startTime` TIME COMMENT '开始时间',
+    `endTime`   TIME COMMENT '结束时间',
+    `teacher`   varchar(10) COMMENT '授课老师'
+);

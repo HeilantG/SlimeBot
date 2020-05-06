@@ -2,16 +2,21 @@ package com.handcraft.features.TianGou;
 
 import com.alibaba.fastjson.JSONObject;
 import com.handcraft.util.MsgCreate;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author HeilantG
  * 舔狗发言 接口来自 http://api.yyhy.me/tg.php?type=api
  */
-
+@Component
 public class CreateTianGouMsg {
+    @Resource
+    MsgCreate msgCreate;
 
-    public static String get() {
-        return format(MsgCreate.httpGetMethod("http://api.yyhy.me/tg.php?type=api"));
+    public String get() {
+        return format(msgCreate.okHttpGetMethod("http://api.yyhy.me/tg.php?type=api"));
     }
 
     private static String format(String Json) {

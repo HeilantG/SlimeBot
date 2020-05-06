@@ -1,4 +1,4 @@
-package com.handcraft.Mapper;
+package com.handcraft.mapper;
 
 import com.handcraft.pojo.ImgInfo;
 import org.apache.ibatis.annotations.Mapper;
