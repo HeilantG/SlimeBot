@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.handcraft.mapper.ClassMapper">
+    <select id="queryAllClass" resultType="classInfo">
+        select uuid, name, week, startTime, endTime, teacher
+        from slimebot.classinfo;
+    </select>
+    <delete id="deleteClassByUuid">
+        delete
+        from slimebot.classinfo
+        where classinfo.uuid = #{uuid}
+    </delete>
+    <insert id="insertClass" parameterType="classInfo">
+        insert into slimebot.classinfo (uuid, name, week, startTime, endTime, teacher)
+        values (#{uuid}, #{name}, #{week}, #{startTime}, #{endTime}, #{teacher});
+    </insert>
+</mapper>
