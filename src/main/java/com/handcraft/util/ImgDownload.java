@@ -24,9 +24,12 @@ public class ImgDownload {
      * @return
      * @author 群主今天发女装自拍了吗的ctrl c+V
      */
-    public String download(String imgUrl, String path) {
+    public String download(String imgUrl, String path, String uuid) {
+        if (path == null) {
+            path = "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\";
+        }
         String localUrl = "";
-        String uuid = stringUtil.getUUID();
+        String imgFormat = "";
         try {
             URL url = new URL(imgUrl);
             URLConnection connection = new URL(imgUrl).openConnection();
@@ -38,7 +41,7 @@ public class ImgDownload {
             //打开网络输入流
             DataInputStream dis = new DataInputStream(url.openStream());
             //获取图片格式
-            String imgFormat = imgUrl.substring(StringUtils.ordinalIndexOf(imgUrl, ".", 3));
+            imgFormat = imgUrl.substring(StringUtils.ordinalIndexOf(imgUrl, ".", 3));
             //建立一个新的文件
             localUrl = path + uuid + imgFormat;
             FileOutputStream fos = new FileOutputStream(new File(localUrl));
@@ -52,7 +55,7 @@ public class ImgDownload {
             fos.close();
         } catch (Exception e) {
         }
-        return uuid;
+        return uuid + imgFormat;
     }
 
     public void getImg() throws IOException {

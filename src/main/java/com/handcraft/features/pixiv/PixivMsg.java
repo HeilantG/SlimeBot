@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,14 +17,15 @@ import java.util.List;
 @Component
 public class PixivMsg {
 
-    @Autowired
+    @Resource
     StringUtil stringUtil;
-
     @Resource
     MsgCreate msgCreate;
+    @Resource
+    ImgInfo imgInfo;
 
     // 获取涩图
-    public String getSeTu(String key, int r18) {
+    public ImgInfo getSeTu(String key, int r18) {
         String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true";
         //处理信息
         // 第一次取值
@@ -35,7 +36,24 @@ public class PixivMsg {
         JSONObject jsonObject = JSONObject.parseObject(substring);
         String imgUrl = jsonObject.getString("url");
         imgUrl = imgUrl.replace("i.pixiv.cat", "www.pixivdl.net");
-        return imgUrl;
+        imgInfo.setImageUrl(imgUrl);
+        imgInfo.setUuid(stringUtil.getUUID());
+        imgInfo.setId(jsonObject.getString("pid"));
+        imgInfo.setTitle(jsonObject.getString("title"));
+        imgInfo.setFormat(imgUrl.substring(StringUtils.ordinalIndexOf(imgUrl, ".", 3)));
+        JSONArray tags = jsonObject.getJSONArray("tags");
+        StringBuffer tagInfo = new StringBuffer();
+        int i = 0;
+        for (Object tag : tags) {
+            tagInfo.append(tag.toString() + " ");
+            i++;
+            if (i == 3) {
+                break;
+            }
+        }
+        imgInfo.setTags(tagInfo.toString());
+        imgInfo.setDate(Date.valueOf("2000-01-01"));
+        return imgInfo;
     }
 
     /**
@@ -63,6 +81,7 @@ public class PixivMsg {
             JSONObject imgObj = imageUrls.getJSONObject(0);
             String large = imgObj.getString("original");
             large = large.replace("i.pximg.net", "www.pixivdl.net");
+            img.setFormat(large.substring(StringUtils.ordinalIndexOf(large, ".", 3)));
             img.setImageUrl(large);
             StringBuffer tagInfo = new StringBuffer();
             // tag 获取

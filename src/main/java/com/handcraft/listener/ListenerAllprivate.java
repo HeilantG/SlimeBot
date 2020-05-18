@@ -2,13 +2,15 @@ package com.handcraft.listener;
 
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
-import com.forte.qqrobot.beans.cqcode.CQCode;
+import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.mapper.ImgMapper;
+import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import javax.annotation.Resource;
 import java.util.Calendar;
 
 @Component
+@Listen(MsgGetTypes.privateMsg)
 public class ListenerAllprivate {
     CQCodeUtil cqCodeUtil = CQCodeUtil.build();
 
@@ -28,9 +31,23 @@ public class ListenerAllprivate {
     ImgDownload imgDownload;
     @Resource
     CreateTianGouMsg createTianGouMsg;
+    @Resource
+    ImgMapper imgMapper;
+
+    //查题
+    @Filter(value = {"查题:.*", "查题：.*"})
+    public void getAnswer(PrivateMsg msg, MsgSender sender) {
+        sender.SENDER.sendPrivateMsg(msg,"答案为:" + msgCreate.getAnswer(msg.getMsg().substring(3)));
+    }
+
+    //菜单
+    @Filter(value = {".*菜单", "你会什么"})
+    public void menu(PrivateMsg msg, MsgSender sender) {
+        sender.SENDER.sendPrivateMsg(msg, msgCreate.getMenu());
+    }
+
     //老黄历
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"来.*老黄历.*"})
     public void programmerCalendar(PrivateMsg msg, MsgSender sender) {
         int i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
@@ -43,27 +60,33 @@ public class ListenerAllprivate {
     @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"来.*涩图"})
     public void setu(PrivateMsg msg, MsgSender sender) {
-        //System.out.println(msg.getQQ() + msg.getId() + "请求了色图bot");
-        sender.SENDER.sendPrivateMsg(msg, "开始定位涩图,可能因网络原因略有延迟(如果太久没消息就是挂了");
-        String s = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(s);
-        //System.out.println("开始下载");
+        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
 
+        //System.out.println("开始下载");
         /*
          * local:
          * C:\Users\HeilantG\Desktop\酷Q Pro\data\image\
          * Server:
          * C:\Users\Administrator\Desktop\酷Q Pro\data\image\
          * */
-        String localUrl = imgDownload.download(s, "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\");
-        String cqCodeLocal = cqCodeUtil.getCQCode_Image(localUrl + ".jpg").toString();
+
+        StringBuffer cqCodeLocal = new StringBuffer();
+        try {
+            imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
+            imgMapper.addImg(seTu);
+            cqCodeLocal.append(cqCodeUtil.getCQCode_Image(seTu.getUuid() + seTu.getFormat()).toString() + "\n");
+            cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
+            cqCodeLocal.append("P站ID:" + seTu.getId());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            sender.SENDER.sendPrivateMsg(msg, cqCodeLocal.toString());
+        }
         // System.out.println(cqCodeLocal);
-        sender.SENDER.sendPrivateMsg(msg, cqCodeLocal);
     }
 
     //天狗模式
 
-    @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"舔我"})
     public void tianGou(PrivateMsg msg, MsgSender sender) {
         sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.get());

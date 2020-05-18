@@ -33,19 +33,20 @@ public class ListenerForTest {
     @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"显示今日"}, group = "190375193")
     public void img(GroupMsg msg, MsgSender sender) {
+        sender.SENDER.sendGroupMsg(msg, "今日(其实是三天前)P站日榜前十选手:");
         List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
-            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
+            System.out.println(cqCode_image);
             try {
                 StringBuffer str = new StringBuffer();
                 //写入图片CQ码
                 str.append(cqCode_image.toString() + "\n");
-                str.append("标题:" + imgInfo.getTitle() + "\n");
-                str.append("P站ID:" + imgInfo.getId() + "\n");
-                str.append("tag:" + imgInfo.getTags());
+                str.append("标题: " + imgInfo.getTitle() + "\n");
+                str.append("P站ID: " + imgInfo.getId() + "\n");
+                str.append("tag: " + imgInfo.getTags());
                 sender.SENDER.sendGroupMsg(msg, str.toString());
-            } catch (Exception e) {
-                continue;
+            } catch (Exception ignored) {
             }
         }
     }

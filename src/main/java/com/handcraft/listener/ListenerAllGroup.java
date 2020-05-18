@@ -2,7 +2,6 @@ package com.handcraft.listener;
 
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
-import com.forte.qqrobot.anno.depend.Beans;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
@@ -10,8 +9,10 @@ import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.mapper.ImgMapper;
+import com.handcraft.pojo.ImgInfo;
+import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,17 +22,29 @@ import javax.annotation.Resource;
  *  */
 
 @Component
+@Listen(MsgGetTypes.groupMsg)
 public class ListenerAllGroup {
-    public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+    private CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Resource
     MsgCreate msgCreate;
     @Resource
     PixivMsg pixivMsg;
     @Resource
     CreateTianGouMsg createTianGouMsg;
+    @Resource
+    ImgDownload imgDownload;
+    @Resource
+    ImgMapper imgMapper;
+
+    //菜单
+    @Filter(value = {".*菜单",".*你会什么"}, at = true)
+    public void menu(GroupMsg msg, MsgSender sender) {
+        sender.SENDER.sendGroupMsg(msg, msgCreate.getMenu());
+    }
+
+
     //老黄历单独调用
 
-    @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"来.*老黄历.*"})
     public void programmerCalendar(GroupMsg msg, MsgSender sender) {
         String dayMsg = msgCreate.getProgrammerCalendar(1);
@@ -40,7 +53,6 @@ public class ListenerAllGroup {
 
     //qq emj 测试
 
-    @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"emj.*"})
     public void img(GroupMsg msg, MsgSender sender) {
         CQCode cqCode = cqCodeUtil.getCQCode_Face("\\ue21c");
@@ -49,23 +61,31 @@ public class ListenerAllGroup {
 
     //涩图Time
 
-    @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"来.*涩图"})
     public void setu(GroupMsg msg, MsgSender sender) {
-        System.out.println(msg.getQQ() + msg.getId() + "请求了色图bot");
-        sender.SENDER.sendGroupMsg(msg, "开始定位涩图,可能因网络原因略有延迟(如果太久没回消息就是挂了");
-        String s = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(s);
-        sender.SENDER.sendGroupMsg(msg, cqCode_image.toString());
+        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
+        StringBuffer cqCodeLocal = new StringBuffer();
+        try {
+            imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
+            imgMapper.addImg(seTu);
+            cqCodeLocal.append(cqCodeUtil.getCQCode_Image(seTu.getUuid() + seTu.getFormat()).toString() + "\n");
+            cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
+            cqCodeLocal.append("P站ID:" + seTu.getId());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            sender.SENDER.sendGroupMsg(msg, cqCodeLocal.toString());
+        }
     }
 
     //天狗模式
 
-    @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"舔我"})
     public void tianGou(GroupMsg msg, MsgSender sender) {
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
         String str = cqCode_at.toString() + "\n" + createTianGouMsg.get();
         sender.SENDER.sendGroupMsg(msg, str);
     }
+
+
 }

@@ -13,8 +13,8 @@
         where date = #{date};
     </select>
     <insert id="addImg" parameterType="imgInfo">
-        insert into slimebot.imginfo(uuid, id, title, imageUrl, tags, date)
-        values (#{uuid}, #{id}, #{title}, #{imageUrl}, #{tags}, #{date});
+        insert into slimebot.imginfo(uuid, id, title, imageUrl, tags, date,format)
+        values (#{uuid}, #{id}, #{title}, #{imageUrl}, #{tags}, #{date},#{format});
     </insert>
 
 </mapper>

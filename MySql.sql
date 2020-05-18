@@ -1,4 +1,4 @@
-create database slimebot;
+create database slimebot default character set utf8 collate utf8_general_ci;
 use slimebot;
 /*pixiv 图片信息表*/
 create table imginfo

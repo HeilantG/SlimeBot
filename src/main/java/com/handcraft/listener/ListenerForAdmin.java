@@ -44,28 +44,24 @@ public class ListenerForAdmin {
     @Filter(code = {"1310147115"}, value = {"获取今日"})
     public void getImg(PrivateMsg msg, MsgSender sender) {
         List<ImgInfo> day = pixivMsg.getDay();
-        for (ImgInfo imgInfo : day) {
-            imgMapper.addImg(imgInfo);
-        }
         sender.SENDER.sendPrivateMsg(msg, "获取完毕,已保存如数据库,预下载开始");
-        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
-        for (ImgInfo imgInfo : imgInfos) {
-            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
+        for (ImgInfo imgInfo : day) {
             try {
+                imgDownload.download(imgInfo.getImageUrl(), null, imgInfo.getUuid());
+                imgMapper.addImg(imgInfo);
+            } catch (Exception ignored) {
 
-            } catch (Exception e) {
-                continue;
             }
         }
+        sender.SENDER.sendPrivateMsg(msg, "图片缓存完毕");
     }
 
 
     @Filter(code = {"1310147115"}, value = {"显示今日"})
     public void selectImg(PrivateMsg msg, MsgSender sender) {
-
         List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
-            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getImageUrl());
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
             try {
                 sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
             } catch (Exception e) {

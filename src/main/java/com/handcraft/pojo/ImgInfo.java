@@ -18,4 +18,5 @@ public class ImgInfo {
     String imageUrl;
     String tags;
     Date date;
+    String format;
 }

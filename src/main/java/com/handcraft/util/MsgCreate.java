@@ -1,11 +1,14 @@
 package com.handcraft.util;
 
+import com.forte.qqrobot.utils.CQCodeUtil;
+import com.handcraft.features.chaoxing.GetAnswer;
 import com.handcraft.features.programmerCalendar.ProgrammerCalendar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -15,6 +18,32 @@ import java.util.regex.Pattern;
 
 @Component
 public class MsgCreate {
+    private CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+    @Resource
+    GetAnswer getAnswer;
+
+    //菜单
+    public String getMenu() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("我的功能:\n");
+        sb.append(cqCodeUtil.getCQCode_Face("202") + "群聊私聊都支持:\n");
+        sb.append("1.获取今日程序员老黄历(来.*老黄历)\n");
+        sb.append("2.舔狗模式(舔我)\n");
+        sb.append(cqCodeUtil.getCQCode_Face("179") + "仅限私聊\n");
+        sb.append("1.随机一张图(来.*涩图)\n");
+        sb.append("2.网课题目查询(查题:XXX)\n");
+        sb.append(cqCodeUtil.getCQCode_Face("187") + "定时功能(只对特定群开放)\n");
+        sb.append("1.提醒上课,签到小助手\n");
+        sb.append("2.p站日榜(目前存在轻微的bug)\n");
+        sb.append("Create By HeilantG" + cqCodeUtil.getCQCode_Face("25"));
+        return sb.toString();
+    }
+
+    //查题
+    public String getAnswer(String question) {
+        return getAnswer.get(question);
+    }
+
     //每日消息
     public String getDayMsg() {
         // 最终返回的文字
@@ -46,6 +75,7 @@ public class MsgCreate {
         return str.toString();
     }
 
+    //转码
 
     public String unicodeToString(String str) {
 
@@ -64,7 +94,7 @@ public class MsgCreate {
         return str;
     }
 
-
+    //okhttp 方法
     public String okHttpGetMethod(String url) {
         OkHttpClient client = new OkHttpClient();
 
