@@ -8,6 +8,7 @@ import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
+import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
@@ -34,7 +35,16 @@ public class ListenerAllGroup {
     @Resource
     ImgDownload imgDownload;
     @Resource
+    IptkBotTalk iptkBotTalk;
+    @Resource
     ImgMapper imgMapper;
+
+    //闲聊
+    @Filter(value = {"[ \f\r\t\n].*"})
+    public void iptkTalk(GroupMsg msg, MsgSender sender){
+        System.out.println("talk->"+msg);
+        sender.SENDER.sendGroupMsg(msg,iptkBotTalk.getTalk(msg.getMsg().substring(1)));
+    }
 
     //菜单
     @Filter(value = {".*菜单",".*你会什么"}, at = true)

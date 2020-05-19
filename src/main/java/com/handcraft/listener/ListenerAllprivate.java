@@ -2,12 +2,12 @@ package com.handcraft.listener;
 
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
-import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
+import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
@@ -32,7 +32,16 @@ public class ListenerAllprivate {
     @Resource
     CreateTianGouMsg createTianGouMsg;
     @Resource
+    IptkBotTalk iptkBotTalk;
+    @Resource
     ImgMapper imgMapper;
+
+    //闲聊
+    @Filter(value = {"[ \f\r\t\n].*"})
+    public void iptkTalk(PrivateMsg msg,MsgSender sender){
+        System.out.println("talk->"+msg);
+        sender.SENDER.sendPrivateMsg(msg,iptkBotTalk.getTalk(msg.getMsg().substring(1)));
+    }
 
     //查题
     @Filter(value = {"查题:.*", "查题：.*"})
