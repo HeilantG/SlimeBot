@@ -58,6 +58,42 @@ public class ImgDownload {
         return uuid + imgFormat;
     }
 
+
+    public String biliDownload(String imgUrl, String path, String uuid) {
+        if (path == null) {
+            path = "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\";
+        }
+        String localUrl = "";
+        String imgFormat = ".jpg";
+        try {
+            URL url = new URL("http://"+imgUrl);
+            URLConnection connection = new URL("http://"+imgUrl).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            InputStream inputStream = connection.getInputStream();
+            //jcq图片文件本身就是md5码 但是方便存贮 我使用uuid
+            //String b = DigestUtils.md5Hex(inputStream).toUpperCase();
+            //打开网络输入流
+            DataInputStream dis = new DataInputStream(url.openStream());
+            //获取图片格式
+            //建立一个新的文件
+            localUrl = path + uuid + imgFormat;
+            FileOutputStream fos = new FileOutputStream(new File(localUrl));
+            byte[] buffer1 = new byte[1024];
+            int length;
+            //开始填充数据
+            while ((length = dis.read(buffer1)) > 0) {
+                fos.write(buffer1, 0, length);
+            }
+            dis.close();
+            fos.close();
+        } catch (Exception e) {
+        }
+        System.out.println(uuid+imgFormat);
+        return uuid + imgFormat;
+    }
+
+
     public void getImg() throws IOException {
         List<String> urlList = new ArrayList<>();
         urlList.add("https://www.pixivdl.net/img-original/img/2020/05/02/00/00/08/81213018_p0.jpg");

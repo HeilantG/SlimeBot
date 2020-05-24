@@ -10,13 +10,16 @@ import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.TianGou.CreateTianGouMsg;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
+import com.handcraft.util.StringUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /*
  *  公用监听器
@@ -37,17 +40,34 @@ public class ListenerAllGroup {
     @Resource
     IptkBotTalk iptkBotTalk;
     @Resource
+    ShareFormat shareFormat;
+    @Resource
+    StringUtil stringUtil;
+    @Resource
     ImgMapper imgMapper;
+
+    //解析分享
+    @Filter(value = {".*CQ:rich.*"})
+    public void share(GroupMsg msg, MsgSender sender) {
+        List<String> format = shareFormat.format(msg.getMsg());
+        StringBuffer sb = new StringBuffer();
+        System.out.println(format.get(2));
+        String local = imgDownload.biliDownload(format.get(2),null, stringUtil.getUUID());
+        sb.append(cqCodeUtil.getCQCode_Image(local));
+        sb.append("title:" + format.get(0) + "\n");
+        sb.append("url:" + format.get(1));
+        sender.SENDER.sendGroupMsg(msg, sb.toString());
+    }
 
     //闲聊
     @Filter(value = {"[ \f\r\t\n].*"})
-    public void iptkTalk(GroupMsg msg, MsgSender sender){
-        System.out.println("talk->"+msg);
-        sender.SENDER.sendGroupMsg(msg,iptkBotTalk.getTalk(msg.getMsg().substring(1)));
+    public void iptkTalk(GroupMsg msg, MsgSender sender) {
+        System.out.println("talk->" + msg);
+        sender.SENDER.sendGroupMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
     }
 
     //菜单
-    @Filter(value = {".*菜单",".*你会什么"}, at = true)
+    @Filter(value = {".*菜单", ".*你会什么"}, at = true)
     public void menu(GroupMsg msg, MsgSender sender) {
         sender.SENDER.sendGroupMsg(msg, msgCreate.getMenu());
     }

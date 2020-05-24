@@ -22,7 +22,7 @@ import java.util.List;
  * groupId = "361081715";
  */
 @Component
-public class ListenerForHuiShou {
+public class ListenerForPixiv {
 
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Resource
@@ -37,7 +37,7 @@ public class ListenerForHuiShou {
      */
 
     @Listen(MsgGetTypes.groupMsg)
-    @Filter(value = {"显示今日"}, group = "361081715", code = "1310147115")
+    @Filter(value = {"显示今日"}, code = "1310147115")
     public void img(GroupMsg msg, MsgSender sender) {
         sender.SENDER.sendGroupMsg(msg, "今日(其实是三天前)P站日榜前十选手:");
         List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());

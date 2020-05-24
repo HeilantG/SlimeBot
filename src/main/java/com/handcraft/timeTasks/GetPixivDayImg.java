@@ -9,7 +9,6 @@ import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class GetPixivDayImg {
     PixivMsg pixivMsg;
     @Resource
     ImgMapper imgMapper;
-    @Autowired
+    @Resource
     StringUtil stringUtil;
     /**
      * 自定义送信器
@@ -64,7 +63,7 @@ public class GetPixivDayImg {
             }
         }*/
     }
-    @Scheduled(cron = "0 30 11 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     public void sendDayImg(){
         BotSender sender = botManager.defaultBot().getSender();
         sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
@@ -79,6 +78,8 @@ public class GetPixivDayImg {
                 str.append("P站ID: " + imgInfo.getId() + "\n");
                 str.append("tag: " + imgInfo.getTags());
                 sender.SENDER.sendGroupMsg("361081715", str.toString());
+                sender.SENDER.sendGroupMsg("641057857", str.toString());
+
             } catch (Exception e) {
                 continue;
             }

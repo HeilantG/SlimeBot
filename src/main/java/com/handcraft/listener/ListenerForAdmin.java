@@ -8,6 +8,7 @@ import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
@@ -39,6 +40,17 @@ public class ListenerForAdmin {
     MsgCreate msgCreate;
     @Resource
     ImgDownload imgDownload;
+    @Resource
+    ShareFormat shareFormat;
+
+    @Filter(code = {"1310147115"}, value = {".*CQ:rich.*"})
+    public void share(PrivateMsg msg, MsgSender sender){
+        List<String> format = shareFormat.format(msg.getMsg());
+        StringBuffer sb = new StringBuffer();
+        sb.append("title:"+format.get(0)+"\n");
+        sb.append("url:"+format.get(1));
+        sender.SENDER.sendPrivateMsg(msg, sb.toString());
+    }
 
 
     @Filter(code = {"1310147115"}, value = {"获取今日"})
