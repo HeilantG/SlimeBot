@@ -51,11 +51,10 @@ public class ListenerAllGroup {
     public void share(GroupMsg msg, MsgSender sender) {
         List<String> format = shareFormat.format(msg.getMsg());
         StringBuffer sb = new StringBuffer();
-        System.out.println(format.get(2));
-        String local = imgDownload.biliDownload(format.get(2),null, stringUtil.getUUID());
-        sb.append(cqCodeUtil.getCQCode_Image(local));
-        sb.append("title:" + format.get(0) + "\n");
-        sb.append("url:" + format.get(1));
+        String local = imgDownload.biliDownload(format.get(2), null, stringUtil.getUUID());
+        sb.append(cqCodeUtil.getCQCode_Image(local)+"\n");
+        sb.append("标题: " + format.get(0) + "\n");
+        sb.append("链接: " + format.get(1));
         sender.SENDER.sendGroupMsg(msg, sb.toString());
     }
 
@@ -91,8 +90,12 @@ public class ListenerAllGroup {
 
     //涩图Time
 
-    @Filter(value = {"来.*涩图"})
+    @Filter(value = {".*来.*涩图.*", ".*来.*色图.*"})
     public void setu(GroupMsg msg, MsgSender sender) {
+        if (msg.getGroupCode().equals("175183084")) {
+            sender.SENDER.sendGroupMsg(msg, "别看涩图了,作业写了吗,妹子谈了嘛,没有你还在这看涩图");
+            return;
+        }
         ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
         StringBuffer cqCodeLocal = new StringBuffer();
         try {
