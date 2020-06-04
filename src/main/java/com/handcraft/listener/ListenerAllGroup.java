@@ -7,7 +7,7 @@ import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.features.TianGou.CreateTianGouMsg;
+import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.share.ShareFormat;
@@ -34,7 +34,7 @@ public class ListenerAllGroup {
     @Resource
     PixivMsg pixivMsg;
     @Resource
-    CreateTianGouMsg createTianGouMsg;
+    CreateApiMsg createTianGouMsg;
     @Resource
     ImgDownload imgDownload;
     @Resource
@@ -52,7 +52,7 @@ public class ListenerAllGroup {
         List<String> format = shareFormat.format(msg.getMsg());
         StringBuffer sb = new StringBuffer();
         String local = imgDownload.biliDownload(format.get(2), null, stringUtil.getUUID());
-        sb.append(cqCodeUtil.getCQCode_Image(local)+"\n");
+        sb.append(cqCodeUtil.getCQCode_Image(local) + "\n");
         sb.append("标题: " + format.get(0) + "\n");
         sb.append("链接: " + format.get(1));
         sender.SENDER.sendGroupMsg(msg, sb.toString());
@@ -113,10 +113,38 @@ public class ListenerAllGroup {
 
     //天狗模式
 
-    @Filter(value = {"舔我"})
-    public void tianGou(GroupMsg msg, MsgSender sender) {
+    @Filter(value = {"舔我","甜我"})
+    public void sweet(GroupMsg msg, MsgSender sender) {
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
-        String str = cqCode_at.toString() + "\n" + createTianGouMsg.get();
+        String str = cqCode_at.toString() + createTianGouMsg.getSweet();
+        sender.SENDER.sendGroupMsg(msg, str);
+    }
+    //定向舔狗模式
+
+    @Filter(value = {"舔他.*", "舔她.*","甜他.*", "甜她.*"})
+    public void sweetAt(GroupMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msgStr.substring(msgStr.indexOf("qq=") + 3, msgStr.length() - 1));
+        String str = cqCode_at.toString() + createTianGouMsg.getSweet();
+        sender.SENDER.sendGroupMsg(msg, str);
+    }
+
+    //毒鸡汤模式
+
+    @Filter(value = {"毒我"})
+    public void poisonousChickenSoup(GroupMsg msg, MsgSender sender) {
+        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
+        String str = cqCode_at.toString() + createTianGouMsg.getPoisonousChickenSoup();
+        sender.SENDER.sendGroupMsg(msg, str);
+    }
+
+    //定向毒鸡汤模式
+
+    @Filter(value = {"毒他.*", "毒她.*"})
+    public void poisonousChickenSoupAt(GroupMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msgStr.substring(msgStr.indexOf("qq=") + 3, msgStr.length() - 1));
+        String str = cqCode_at.toString() + createTianGouMsg.getPoisonousChickenSoup();
         sender.SENDER.sendGroupMsg(msg, str);
     }
 

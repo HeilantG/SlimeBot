@@ -28,8 +28,9 @@ public class MsgCreate {
         sb.append("我的功能:\n");
         sb.append(cqCodeUtil.getCQCode_Face("202") + "群聊私聊都支持:\n");
         sb.append("1.获取今日程序员老黄历(来.*老黄历)\n");
-        sb.append("2.舔狗模式(舔我)\n");
+        sb.append("2.嘴甜or毒鸡汤模式(舔我\\毒我)\n");
         sb.append("3.闲聊模式(在说的话前面加个空格:例如( 你好))\n");
+        sb.append("4.解析B站\\知乎小程序分享\n");
         sb.append(cqCodeUtil.getCQCode_Face("179") + "仅限私聊\n");
         sb.append("1.随机一张图(来.*涩图)\n");
         sb.append("2.网课题目查询(查题:XXX)\n");

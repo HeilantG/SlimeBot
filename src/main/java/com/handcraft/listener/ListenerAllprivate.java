@@ -6,7 +6,7 @@ import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.features.TianGou.CreateTianGouMsg;
+import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.mapper.ImgMapper;
@@ -30,7 +30,7 @@ public class ListenerAllprivate {
     @Resource
     ImgDownload imgDownload;
     @Resource
-    CreateTianGouMsg createTianGouMsg;
+    CreateApiMsg createTianGouMsg;
     @Resource
     IptkBotTalk iptkBotTalk;
     @Resource
@@ -38,15 +38,15 @@ public class ListenerAllprivate {
 
     //闲聊
     @Filter(value = {"[ \f\r\t\n].*"})
-    public void iptkTalk(PrivateMsg msg,MsgSender sender){
-        System.out.println("talk->"+msg);
-        sender.SENDER.sendPrivateMsg(msg,iptkBotTalk.getTalk(msg.getMsg().substring(1)));
+    public void iptkTalk(PrivateMsg msg, MsgSender sender) {
+        System.out.println("talk->" + msg);
+        sender.SENDER.sendPrivateMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
     }
 
     //查题
     @Filter(value = {"查题:.*", "查题：.*"})
     public void getAnswer(PrivateMsg msg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg(msg,"答案为:" + msgCreate.getAnswer(msg.getMsg().substring(3)));
+        sender.SENDER.sendPrivateMsg(msg, "答案为:" + msgCreate.getAnswer(msg.getMsg().substring(3)));
     }
 
     //菜单
@@ -94,11 +94,18 @@ public class ListenerAllprivate {
         // System.out.println(cqCodeLocal);
     }
 
-    //天狗模式
+    //嘴甜
 
     @Filter(value = {"舔我"})
-    public void tianGou(PrivateMsg msg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.get());
+    public void sweet(PrivateMsg msg, MsgSender sender) {
+        sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.getSweet());
+    }
+
+    //毒鸡汤
+
+    @Filter(value = {"毒我"})
+    public void poisonousChickenSoup(PrivateMsg msg, MsgSender sender) {
+        sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.getSweet());
     }
 
 }
