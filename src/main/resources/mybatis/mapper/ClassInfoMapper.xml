@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.handcraft.mapper.ClassMapper">
+<mapper namespace="com.handcraft.mapper.ClassInfoMapper">
     <select id="queryAllClass" resultType="classInfo">
         select uuid, name, week, startTime, endTime, teacher
         from slimebot.classinfo;

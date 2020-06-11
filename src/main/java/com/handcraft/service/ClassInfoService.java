@@ -1,6 +1,6 @@
 package com.handcraft.service;
 
-import com.handcraft.mapper.ClassMapper;
+import com.handcraft.mapper.ClassInfoMapper;
 import com.handcraft.pojo.ClassInfo;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +10,17 @@ import java.util.List;
 @Service
 public class ClassInfoService {
     @Resource
-    ClassMapper classMapper;
+    ClassInfoMapper classInfoMapper;
 
     public List<ClassInfo> queryAllClass() {
-        return classMapper.queryAllClass();
+        return classInfoMapper.queryAllClass();
     }
 
     public int deleteClassByUuid(String classInfo) {
-        return classMapper.deleteClassByUuid(classInfo);
+        return classInfoMapper.deleteClassByUuid(classInfo);
     }
 
     public int insertClassInfo(ClassInfo classInfo) {
-        return classMapper.insertClass(classInfo);
+        return classInfoMapper.insertClass(classInfo);
     }
 }

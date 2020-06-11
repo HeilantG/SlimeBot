@@ -9,7 +9,7 @@ import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
-import com.handcraft.mapper.ImgMapper;
+import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
@@ -34,7 +34,7 @@ public class ListenerAllprivate {
     @Resource
     IptkBotTalk iptkBotTalk;
     @Resource
-    ImgMapper imgMapper;
+    ImgInfoMapper imgInfoMapper;
 
     //闲聊
     @Filter(value = {"[ \f\r\t\n].*"})
@@ -82,7 +82,7 @@ public class ListenerAllprivate {
         StringBuffer cqCodeLocal = new StringBuffer();
         try {
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
-            imgMapper.addImg(seTu);
+            imgInfoMapper.addImg(seTu);
             cqCodeLocal.append(cqCodeUtil.getCQCode_Image(seTu.getUuid() + seTu.getFormat()).toString() + "\n");
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
             cqCodeLocal.append("P站ID:" + seTu.getId());

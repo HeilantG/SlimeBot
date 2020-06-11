@@ -25,38 +25,43 @@
                 <div class="card-body">
                     <div class="table-responsive ">
                         <div>
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
-                                <a class="btn btn-primary" href="/page/class_add.html">添加</a>
+                            <div class="toolbar-btn-action">
+                                <a class="btn btn-primary m-r-5" href="class_add.html"><i class="mdi mdi-plus"></i>
+                                    新增</a>
+                                <a class="btn btn-success m-r-5" href="#!"><i class="mdi mdi-check"></i> 启用</a>
+                                <a class="btn btn-warning m-r-5" href="#!"><i class="mdi mdi-block-helper"></i> 禁用</a>
+                                <a class="btn btn-danger" href="#!"><i class="mdi mdi-window-close"></i> 删除</a>
                             </div>
                         </div>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>课程名</th>
-                                <th>教师</th>
-                                <th>上课时间</th>
-                                <th>下课时间</th>
-                                <th>星期</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody id="classTable">
-                            <tr v-for="(item,index) in info.data">
-                                <th scope="row">{{index+1}}</th>
-                                <td>{{item.name}}</td>
-                                <td>{{item.teacher}}</td>
-                                <td>{{item.startTime}}</td>
-                                <td>{{item.endTime}}</td>
-                                <td>星期{{week[item.week]}}</td>
-                                <td class="col-lg-2">
-                                    <button @click="this.deleteClass(item.uuid)" class="btn btn-primary">删除</button>
-                                    <button class="btn btn-dark">修改</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>课程名</th>
+                                    <th>教师</th>
+                                    <th>上课时间</th>
+                                    <th>下课时间</th>
+                                    <th>星期</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="classTable">
+                                <tr v-for="(item,index) in info.data">
+                                    <th scope="row">{{index+1}}</th>
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.teacher}}</td>
+                                    <td>{{item.startTime}}</td>
+                                    <td>{{item.endTime}}</td>
+                                    <td>星期{{week[item.week]}}</td>
+                                    <td class="col-lg-2">
+                                        <button @click="this.deleteClass(item.uuid)" class="btn btn-primary">删除</button>
+                                        <button class="btn btn-dark">修改</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

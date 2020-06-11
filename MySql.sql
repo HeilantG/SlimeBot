@@ -15,6 +15,7 @@ values ('1', '1', '1', '1', '1');
 
 select *
 from imginfo;
+/*上课通知*/
 create table classInfo
 (
     `uuid`      varchar(40) primary key,
@@ -25,3 +26,14 @@ create table classInfo
     `teacher`   varchar(10) COMMENT '授课老师'
 );
 alter table imginfo convert to character set utf8mb4 collate utf8mb4_bin;
+
+/*全体成员通知*/
+create table msgTime(
+                        `uuid` varchar(40) primary key ,
+                        `qqCode` varchar (20) COMMENT '通知群号',
+                        `sendTime` datetime COMMENT '通知时间',
+                        `msg` text COMMENT '通知内容',
+                        `at` boolean COMMENT '是否At'
+);
+insert into msgTime (uuid, qqCode, sendTime, msg)
+values ('addasda','123456',now(),'123');

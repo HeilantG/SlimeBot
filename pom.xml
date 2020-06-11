@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.handcraft</groupId>
     <artifactId>slimebot</artifactId>
-    <version>1.1-630</version>
+    <version>1.2-101</version>
     <name>slimebot</name>
     <description>CoolQ bot plugin</description>
 

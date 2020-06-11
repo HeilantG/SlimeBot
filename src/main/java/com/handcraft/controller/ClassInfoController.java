@@ -41,7 +41,6 @@ public class ClassInfoController {
     @RequestMapping(value = "/insert/ClassInfo")
     public String insert(ClassInfo classInfo) {
         classInfo.setUuid(stringUtil.getUUID());
-        // System.out.println(classInfo.toString());
         classInfoService.insertClassInfo(classInfo);
         return "redirect:/page/class_table.html";
     }

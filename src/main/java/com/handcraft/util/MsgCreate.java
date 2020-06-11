@@ -37,6 +37,7 @@ public class MsgCreate {
         sb.append(cqCodeUtil.getCQCode_Face("187") + "定时功能(只对特定群开放)\n");
         sb.append("1.提醒上课,签到小助手\n");
         sb.append("2.p站日榜(目前存在轻微的bug)\n");
+        sb.append("3.定时通知\n");
         sb.append("Create By HeilantG" + cqCodeUtil.getCQCode_Face("25"));
         return sb.toString();
     }

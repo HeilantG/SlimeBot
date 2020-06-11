@@ -7,7 +7,7 @@ import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
-import com.handcraft.mapper.ImgMapper;
+import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
@@ -26,7 +26,7 @@ public class ListenerForTest {
     @Resource
     MsgCreate msgCreate;
     @Resource
-    ImgMapper imgMapper;
+    ImgInfoMapper imgInfoMapper;
     @Resource
     StringUtil stringUtil;
 
@@ -34,7 +34,7 @@ public class ListenerForTest {
     @Filter(value = {"显示今日"}, group = "190375193")
     public void img(GroupMsg msg, MsgSender sender) {
         sender.SENDER.sendGroupMsg(msg, "今日(其实是三天前)P站日榜前十选手:");
-        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
+        List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
             System.out.println(cqCode_image);

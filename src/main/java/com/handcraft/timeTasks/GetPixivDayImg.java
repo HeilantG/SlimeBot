@@ -5,7 +5,7 @@ import com.forte.qqrobot.bot.BotManager;
 import com.forte.qqrobot.bot.BotSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.pixiv.PixivMsg;
-import com.handcraft.mapper.ImgMapper;
+import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.StringUtil;
@@ -25,7 +25,7 @@ public class GetPixivDayImg {
     @Resource
     PixivMsg pixivMsg;
     @Resource
-    ImgMapper imgMapper;
+    ImgInfoMapper imgInfoMapper;
     @Resource
     StringUtil stringUtil;
     /**
@@ -44,32 +44,19 @@ public class GetPixivDayImg {
         for (ImgInfo imgInfo : imgInfos) {
             try {
                 imgDownload.download(imgInfo.getImageUrl(), "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\", imgInfo.getUuid());
-                imgMapper.addImg(imgInfo);
+                imgInfoMapper.addImg(imgInfo);
             } catch (Exception ignored) {
             }
         }
-       /* sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
-        for (ImgInfo imgInfo : imgInfos) {
-            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
-            try {
-                StringBuffer str = new StringBuffer();
-                //写入图片CQ码
-                str.append(cqCode_image.toString() + "\n");
-                str.append("标题: " + imgInfo.getTitle() + "\n");
-                str.append("P站ID: " + imgInfo.getId() + "\n");
-                str.append("tag: " + imgInfo.getTags());
-                sender.SENDER.sendGroupMsg("361081715", str.toString());
-            } catch (Exception ignored) {
-            }
-        }*/
     }
+
     @Scheduled(cron = "0 0 12 * * ?")
-    public void sendDayImg(){
+    public void sendDayImg() {
         BotSender sender = botManager.defaultBot().getSender();
         sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
-        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
+        List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
-           CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
             try {
                 StringBuffer str = new StringBuffer();
                 //写入图片CQ码

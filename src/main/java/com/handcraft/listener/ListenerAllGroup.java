@@ -11,7 +11,7 @@ import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.share.ShareFormat;
-import com.handcraft.mapper.ImgMapper;
+import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
@@ -44,7 +44,7 @@ public class ListenerAllGroup {
     @Resource
     StringUtil stringUtil;
     @Resource
-    ImgMapper imgMapper;
+    ImgInfoMapper imgInfoMapper;
 
     //解析分享
     @Filter(value = {".*CQ:rich.*"})
@@ -61,7 +61,6 @@ public class ListenerAllGroup {
     //闲聊
     @Filter(value = {"[ \f\r\t\n].*"})
     public void iptkTalk(GroupMsg msg, MsgSender sender) {
-        System.out.println("talk->" + msg);
         sender.SENDER.sendGroupMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
     }
 
@@ -100,7 +99,7 @@ public class ListenerAllGroup {
         StringBuffer cqCodeLocal = new StringBuffer();
         try {
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
-            imgMapper.addImg(seTu);
+            imgInfoMapper.addImg(seTu);
             cqCodeLocal.append(cqCodeUtil.getCQCode_Image(seTu.getUuid() + seTu.getFormat()).toString() + "\n");
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
             cqCodeLocal.append("P站ID:" + seTu.getId());

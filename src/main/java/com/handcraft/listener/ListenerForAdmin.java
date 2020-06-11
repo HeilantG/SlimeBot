@@ -9,7 +9,7 @@ import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.share.ShareFormat;
-import com.handcraft.mapper.ImgMapper;
+import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class ListenerForAdmin {
     public CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Autowired
-    ImgMapper imgMapper;
+    ImgInfoMapper imgInfoMapper;
     @Autowired
     PixivMsg pixivMsg;
     @Autowired
@@ -60,7 +60,7 @@ public class ListenerForAdmin {
         for (ImgInfo imgInfo : day) {
             try {
                 imgDownload.download(imgInfo.getImageUrl(), null, imgInfo.getUuid());
-                imgMapper.addImg(imgInfo);
+                imgInfoMapper.addImg(imgInfo);
             } catch (Exception ignored) {
 
             }
@@ -71,7 +71,7 @@ public class ListenerForAdmin {
 
     @Filter(code = {"1310147115"}, value = {"显示今日"})
     public void selectImg(PrivateMsg msg, MsgSender sender) {
-        List<ImgInfo> imgInfos = imgMapper.queryImgListByDate(stringUtil.getDate());
+        List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
             try {

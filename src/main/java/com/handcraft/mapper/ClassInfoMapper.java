@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface ClassMapper {
+public interface ClassInfoMapper {
     public List<ClassInfo> queryAllClass();
 
     public int deleteClassByUuid(String uuid);

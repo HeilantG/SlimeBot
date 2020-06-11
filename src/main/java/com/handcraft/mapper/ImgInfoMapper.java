@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface ImgMapper {
+public interface ImgInfoMapper {
     //查询所有
 
     List<ImgInfo> queryImgList();
