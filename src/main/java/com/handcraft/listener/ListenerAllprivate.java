@@ -30,7 +30,7 @@ public class ListenerAllprivate {
     @Resource
     ImgDownload imgDownload;
     @Resource
-    CreateApiMsg createTianGouMsg;
+    CreateApiMsg createApiMsg;
     @Resource
     IptkBotTalk iptkBotTalk;
     @Resource
@@ -96,16 +96,25 @@ public class ListenerAllprivate {
 
     //嘴甜
 
-    @Filter(value = {"舔我"})
+    @Filter(value = {".我"})
     public void sweet(PrivateMsg msg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.getSweet());
+        String sendMsg;
+        switch (msg.getMsg().substring(0, 1)) {
+            case "舔":
+                sendMsg = createApiMsg.getTianGou();
+                sendMsg = sendMsg.substring(0, sendMsg.length() - 1);
+                break;
+            case "甜":
+                sendMsg = createApiMsg.getSweet();
+                break;
+            case "毒":
+                sendMsg = createApiMsg.getPoisonousChickenSoup();
+                break;
+            default:
+                return;
+        }
+        sender.SENDER.sendPrivateMsg(msg, sendMsg);
     }
 
-    //毒鸡汤
-
-    @Filter(value = {"毒我"})
-    public void poisonousChickenSoup(PrivateMsg msg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg(msg, createTianGouMsg.getSweet());
-    }
 
 }

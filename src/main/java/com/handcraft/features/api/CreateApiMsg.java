@@ -25,6 +25,13 @@ public class CreateApiMsg {
     }
 
     /**
+     * 舔狗
+     */
+    public String getTianGou() {
+        return format(msgCreate.okHttpGetMethod("http://api.yyhy.me/tg.php?type=api"));
+    }
+
+    /**
      * 毒鸡汤
      */
     public String getPoisonousChickenSoup() {

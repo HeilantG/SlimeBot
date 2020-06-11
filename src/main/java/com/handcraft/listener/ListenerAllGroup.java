@@ -34,7 +34,7 @@ public class ListenerAllGroup {
     @Resource
     PixivMsg pixivMsg;
     @Resource
-    CreateApiMsg createTianGouMsg;
+    CreateApiMsg createApiMsg;
     @Resource
     ImgDownload imgDownload;
     @Resource
@@ -90,7 +90,7 @@ public class ListenerAllGroup {
 
     //涩图Time
 
-    @Filter(value = {".*来.*涩图.*", ".*来.*色图.*"})
+    @Filter(value = {".*来.*[色|涩]图.*"})
     public void setu(GroupMsg msg, MsgSender sender) {
         if (msg.getGroupCode().equals("175183084")) {
             sender.SENDER.sendGroupMsg(msg, "别看涩图了,作业写了吗,妹子谈了嘛,没有你还在这看涩图");
@@ -111,41 +111,50 @@ public class ListenerAllGroup {
         }
     }
 
-    //天狗模式
+    //嘴甜模式
 
-    @Filter(value = {"舔我","甜我"})
+    @Filter(value = {".我"})
     public void sweet(GroupMsg msg, MsgSender sender) {
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
-        String str = cqCode_at.toString() + createTianGouMsg.getSweet();
-        sender.SENDER.sendGroupMsg(msg, str);
+        String sendMsg;
+        switch (msg.getMsg().substring(0, 1)) {
+            case "舔":
+                sendMsg = createApiMsg.getTianGou();
+                sendMsg = sendMsg.substring(0, sendMsg.length() - 1);
+                break;
+            case "甜":
+                sendMsg = createApiMsg.getSweet();
+                break;
+            case "毒":
+                sendMsg = createApiMsg.getPoisonousChickenSoup();
+                break;
+            default:
+                return;
+        }
+        sender.SENDER.sendGroupMsg(msg, cqCode_at + " " + sendMsg);
     }
-    //定向舔狗模式
+    //定向嘴甜模式
 
-    @Filter(value = {"舔他.*", "舔她.*","甜他.*", "甜她.*"})
+    @Filter(value = {".[她,他].*"})
     public void sweetAt(GroupMsg msg, MsgSender sender) {
         String msgStr = msg.getMsg();
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msgStr.substring(msgStr.indexOf("qq=") + 3, msgStr.length() - 1));
-        String str = cqCode_at.toString() + createTianGouMsg.getSweet();
-        sender.SENDER.sendGroupMsg(msg, str);
-    }
-
-    //毒鸡汤模式
-
-    @Filter(value = {"毒我"})
-    public void poisonousChickenSoup(GroupMsg msg, MsgSender sender) {
-        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
-        String str = cqCode_at.toString() + createTianGouMsg.getPoisonousChickenSoup();
-        sender.SENDER.sendGroupMsg(msg, str);
-    }
-
-    //定向毒鸡汤模式
-
-    @Filter(value = {"毒他.*", "毒她.*"})
-    public void poisonousChickenSoupAt(GroupMsg msg, MsgSender sender) {
-        String msgStr = msg.getMsg();
-        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msgStr.substring(msgStr.indexOf("qq=") + 3, msgStr.length() - 1));
-        String str = cqCode_at.toString() + createTianGouMsg.getPoisonousChickenSoup();
-        sender.SENDER.sendGroupMsg(msg, str);
+        String sendMsg;
+        switch (msg.getMsg().substring(0, 1)) {
+            case "舔":
+                sendMsg = createApiMsg.getTianGou();
+                sendMsg = sendMsg.substring(0, sendMsg.length() - 1);
+                break;
+            case "甜":
+                sendMsg = createApiMsg.getSweet();
+                break;
+            case "毒":
+                sendMsg = createApiMsg.getPoisonousChickenSoup();
+                break;
+            default:
+                return;
+        }
+        sender.SENDER.sendGroupMsg(msg, cqCode_at + " " + sendMsg);
     }
 
 
