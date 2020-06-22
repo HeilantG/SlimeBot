@@ -59,10 +59,10 @@ public class ListenerAllGroup {
     }
 
     //闲聊
-    @Filter(value = {"[ \f\r\t\n].*"})
+    /*@Filter(value = {"[ \f\r\t\n].*"})
     public void iptkTalk(GroupMsg msg, MsgSender sender) {
         sender.SENDER.sendGroupMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
-    }
+    }*/
 
     //菜单
     @Filter(value = {".*菜单", ".*你会什么"}, at = true)
@@ -89,14 +89,19 @@ public class ListenerAllGroup {
 
     //涩图Time
 
-    @Filter(value = {".*来.*[色|涩]图.*"})
+    @Filter(value = {"来.*[色|涩]图"})
     public void setu(GroupMsg msg, MsgSender sender) {
+        StringBuffer cqCodeLocal = new StringBuffer();
         if (msg.getGroupCode().equals("175183084")) {
             sender.SENDER.sendGroupMsg(msg, "别看涩图了,作业写了吗,妹子谈了嘛,没有你还在这看涩图");
             return;
         }
-        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
-        StringBuffer cqCodeLocal = new StringBuffer();
+        String msgStr = msg.getMsg();
+        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", msgStr.substring(2, msgStr.length() - 2), 0);
+        if (seTu.getId().equals("0")) {
+            cqCodeLocal.append("虽然没有指定类别的涩图，但是我找到了别的好康的\n");
+            seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
+        }
         try {
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
             imgInfoMapper.addImg(seTu);

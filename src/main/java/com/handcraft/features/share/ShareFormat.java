@@ -25,18 +25,19 @@ public class ShareFormat {
         String qqdocurl = detail.getString("qqdocurl");
         String preview = detail.getString("preview");
         String share = "";
-        try {
-            share = qqdocurl.substring(0, qqdocurl.indexOf("share") - 1);
-        } catch (Exception e) {
-        }
+
         try {
             share = qqdocurl.substring(0, qqdocurl.indexOf("utm_medium") - 1);
         } catch (Exception e) {
         }
-        if (judge.contains("detail_1")){
-            infoList.add(detail.getString("title"));
-        }else {
+        try {
+            share = qqdocurl.substring(0, qqdocurl.indexOf("share") - 1);
+        } catch (Exception e) {
+        }
+        if (judge.contains("detail_1")) {
             infoList.add(detail.getString("desc"));
+        } else {
+            infoList.add(detail.getString("title"));
         }
         infoList.add(share);
         infoList.add(preview);

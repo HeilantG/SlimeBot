@@ -69,7 +69,7 @@ public class ListenerAllprivate {
     @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"来.*涩图"})
     public void setu(PrivateMsg msg, MsgSender sender) {
-        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", 0);
+        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "",0);
 
         //System.out.println("开始下载");
         /*

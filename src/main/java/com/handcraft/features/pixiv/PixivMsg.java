@@ -25,14 +25,20 @@ public class PixivMsg {
     ImgInfo imgInfo;
 
     // 获取涩图
-    public ImgInfo getSeTu(String key, int r18) {
-        String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true";
+    public ImgInfo getSeTu(String key, String keyword, int r18) {
+        String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true&keyword=" + keyword;
         //处理信息
         // 第一次取值
         JSONObject obj = JSONObject.parseObject(msgCreate.okHttpGetMethod(url));
-        String code = obj.getString("data");
+        // 如果没有找到则返回空值重新调用
+        String code = obj.getString("code");
+        if (code.equals("404")) {
+            imgInfo.setId("0");
+            return imgInfo;
+        }
+        String data = obj.getString("data");
         // 第二次取值
-        String substring = code.substring(1, code.length() - 1);
+        String substring = data.substring(1, data.length() - 1);
         JSONObject jsonObject = JSONObject.parseObject(substring);
         String imgUrl = jsonObject.getString("url");
         imgUrl = imgUrl.replace("i.pixiv.cat", "www.pixivdl.net");

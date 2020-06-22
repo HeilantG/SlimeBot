@@ -1,11 +1,10 @@
 package com.handcraft.listener;
 
-import com.forte.qqrobot.anno.depend.Beans;
 import org.springframework.stereotype.Component;
 
 /**
  * @author HeilantG
- * 猫区fata转发
+ * 猫区fate转发
  */
 
 @Component

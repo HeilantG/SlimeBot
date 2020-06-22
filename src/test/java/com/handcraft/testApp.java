@@ -16,9 +16,7 @@ public class testApp {
 
     @Test
     public void all() {
-        String msgStr = "[CQ:at,qq=1183216650]";
-        System.out.println(msgStr.substring(msgStr.indexOf("qq=") + 3,msgStr.length()-1));
+        System.out.println(System.getProperty("user.dir"));
     }
-
 
 }
