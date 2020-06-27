@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <title>首页-SlimeBot后台管理</title>
+    <link href="favicon.ico" rel="icon" type="image/ico">
+    <meta content="LightYear,光年,后台模板,后台管理系统,光年HTML模板" name="keywords">
+    <meta content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。" name="description">
+    <meta content="yinqi" name="author">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="js/bootstrap-multitabs/multitabs.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <aside class="lyear-layout-sidebar">
+
+            <!-- logo -->
+            <div class="sidebar-header" id="logo">
+                <a href="index.html"><img alt="LightYear" src="images/logo-sidebar.png" title="LightYear"/></a>
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer">
+                        <li class="nav-item active"><a class="multitabs" href="lyear_main.html"><i
+                                class="mdi mdi-home"></i> <span>后台首页</span></a></li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-table-large"></i> <span>课表</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="/page/class_table.html">课程通知</a></li>
+                                <li><a class="multitabs" href="/page/msgTime_table.html">消息通知</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <p class="copyright">Copyright &copy; 2019. <a href="http://lyear.itshubao.com"
+                                                                   target="_blank">IT书包</a> All rights reserved.</p>
+                </div>
+            </div>
+
+        </aside>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a data-toggle="dropdown" href="javascript:void(0)">
+                                <img alt="笔下光年" class="img-avatar img-avatar-48 m-r-10" src="images/users/avatar.jpg"/>
+                                <span>支配 <span class="caret"></span></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a class="multitabs" data-url="lyear_pages_profile.html"
+                                       href="javascript:void(0)"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                                <li><a class="multitabs" data-url="lyear_pages_edit_pwd.html" href="javascript:void(0)"><i
+                                        class="mdi mdi-lock-outline"></i> 修改密码</a></li>
+                                <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                                <li class="divider"></li>
+                                <li><a href="lyear_pages_login.html"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--切换主题配色-->
+                        <li class="dropdown dropdown-skin">
+                            <span class="icon-palette" data-toggle="dropdown"><i class="mdi mdi-palette"></i></span>
+                            <ul class="dropdown-menu dropdown-menu-right" data-stopPropagation="true">
+                                <li class="drop-title"><p>LOGO</p></li>
+                                <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input checked id="logo_bg_1" name="logo_bg" type="radio" value="default">
+                    <label for="logo_bg_1"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_2" name="logo_bg" type="radio" value="color_2">
+                    <label for="logo_bg_2"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_3" name="logo_bg" type="radio" value="color_3">
+                    <label for="logo_bg_3"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_4" name="logo_bg" type="radio" value="color_4">
+                    <label for="logo_bg_4"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_5" name="logo_bg" type="radio" value="color_5">
+                    <label for="logo_bg_5"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_6" name="logo_bg" type="radio" value="color_6">
+                    <label for="logo_bg_6"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_7" name="logo_bg" type="radio" value="color_7">
+                    <label for="logo_bg_7"></label>
+                  </span>
+                                    <span>
+                    <input id="logo_bg_8" name="logo_bg" type="radio" value="color_8">
+                    <label for="logo_bg_8"></label>
+                  </span>
+                                </li>
+                                <li class="drop-title"><p>头部</p></li>
+                                <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input checked id="header_bg_1" name="header_bg" type="radio" value="default">
+                    <label for="header_bg_1"></label>                      
+                  </span>
+                                    <span>
+                    <input id="header_bg_2" name="header_bg" type="radio" value="color_2">
+                    <label for="header_bg_2"></label>                      
+                  </span>
+                                    <span>
+                    <input id="header_bg_3" name="header_bg" type="radio" value="color_3">
+                    <label for="header_bg_3"></label>
+                  </span>
+                                    <span>
+                    <input id="header_bg_4" name="header_bg" type="radio" value="color_4">
+                    <label for="header_bg_4"></label>                      
+                  </span>
+                                    <span>
+                    <input id="header_bg_5" name="header_bg" type="radio" value="color_5">
+                    <label for="header_bg_5"></label>                      
+                  </span>
+                                    <span>
+                    <input id="header_bg_6" name="header_bg" type="radio" value="color_6">
+                    <label for="header_bg_6"></label>                      
+                  </span>
+                                    <span>
+                    <input id="header_bg_7" name="header_bg" type="radio" value="color_7">
+                    <label for="header_bg_7"></label>
+                  </span>
+                                    <span>
+                    <input id="header_bg_8" name="header_bg" type="radio" value="color_8">
+                    <label for="header_bg_8"></label>
+                  </span>
+                                </li>
+                                <li class="drop-title"><p>侧边栏</p></li>
+                                <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input checked id="sidebar_bg_1" name="sidebar_bg" type="radio" value="default">
+                    <label for="sidebar_bg_1"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_2" name="sidebar_bg" type="radio" value="color_2">
+                    <label for="sidebar_bg_2"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_3" name="sidebar_bg" type="radio" value="color_3">
+                    <label for="sidebar_bg_3"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_4" name="sidebar_bg" type="radio" value="color_4">
+                    <label for="sidebar_bg_4"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_5" name="sidebar_bg" type="radio" value="color_5">
+                    <label for="sidebar_bg_5"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_6" name="sidebar_bg" type="radio" value="color_6">
+                    <label for="sidebar_bg_6"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_7" name="sidebar_bg" type="radio" value="color_7">
+                    <label for="sidebar_bg_7"></label>
+                  </span>
+                                    <span>
+                    <input id="sidebar_bg_8" name="sidebar_bg" type="radio" value="color_8">
+                    <label for="sidebar_bg_8"></label>
+                  </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--切换主题配色-->
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div id="iframe-content"></div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/bootstrap.min.js" type="text/javascript"></script>
+<script src="js/perfect-scrollbar.min.js" type="text/javascript"></script>
+<script src="js/bootstrap-multitabs/multitabs.js" type="text/javascript"></script>
+<script src="js/index.min.js" type="text/javascript"></script>
+</body>
+</html>
