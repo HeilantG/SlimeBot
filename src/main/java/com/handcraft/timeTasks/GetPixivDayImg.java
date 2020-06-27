@@ -43,7 +43,7 @@ public class GetPixivDayImg {
         //预下载
         for (ImgInfo imgInfo : imgInfos) {
             try {
-                imgDownload.download(imgInfo.getImageUrl(), "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\", imgInfo.getUuid());
+                imgDownload.download(imgInfo.getImageUrl(), null, imgInfo.getUuid());
                 imgInfoMapper.addImg(imgInfo);
             } catch (Exception ignored) {
             }

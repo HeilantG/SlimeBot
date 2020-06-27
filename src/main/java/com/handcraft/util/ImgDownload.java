@@ -26,7 +26,7 @@ public class ImgDownload {
      */
     public String download(String imgUrl, String path, String uuid) {
         if (path == null) {
-            path = "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\";
+            path = System.getProperty("user.dir") + "\\image\\";
         }
         String localUrl = "";
         String imgFormat = "";
@@ -36,7 +36,6 @@ public class ImgDownload {
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             InputStream inputStream = connection.getInputStream();
-            //jcq图片文件本身就是md5码 但是方便存贮 我使用uuid
             //String b = DigestUtils.md5Hex(inputStream).toUpperCase();
             //打开网络输入流
             DataInputStream dis = new DataInputStream(url.openStream());
@@ -61,13 +60,13 @@ public class ImgDownload {
 
     public String biliDownload(String imgUrl, String path, String uuid) {
         if (path == null) {
-            path = "C:\\Users\\Administrator\\Desktop\\酷Q Pro\\data\\image\\";
+            path = System.getProperty("user.dir") + "\\image\\";
         }
         String localUrl = "";
         String imgFormat = ".jpg";
         try {
-            URL url = new URL("http://"+imgUrl);
-            URLConnection connection = new URL("http://"+imgUrl).openConnection();
+            URL url = new URL("http://" + imgUrl);
+            URLConnection connection = new URL("http://" + imgUrl).openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             InputStream inputStream = connection.getInputStream();
@@ -89,7 +88,7 @@ public class ImgDownload {
             fos.close();
         } catch (Exception e) {
         }
-        System.out.println(uuid+imgFormat);
+        System.out.println(uuid + imgFormat);
         return uuid + imgFormat;
     }
 

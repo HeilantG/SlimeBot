@@ -31,14 +31,16 @@ public class ListenerForTest {
     @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"#提醒签到"})
     public void remindQianDao(GroupMsg groupMsg, MsgSender sender) {
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image("\\SlimeBot\\TimeTasks\\RemindQianDao.png");
+        System.out.println("提醒签到");
+        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindQianDao.png");
         sender.SENDER.sendGroupMsg(groupMsg, cqCode_image.toString());
     }
 
     @Listen(MsgGetTypes.groupMsg)
     @Filter(value = {"#提醒上课"})
     public void remindClass(GroupMsg groupMsg, MsgSender sender) {
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image("\\SlimeBot\\TimeTasks\\RemindClass.jpg");
+        System.out.println("提醒上课");
+        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClass.jpg");
         sender.SENDER.sendGroupMsg(groupMsg, cqCode_image.toString());
     }
 

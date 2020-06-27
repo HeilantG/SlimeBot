@@ -16,6 +16,7 @@ import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
+import com.simplerobot.modules.utils.KQCodeUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -89,6 +90,7 @@ public class ListenerAllGroup {
 
     //涩图Time
 
+
     @Filter(value = {"来.*[色|涩]图"})
     public void setu(GroupMsg msg, MsgSender sender) {
         StringBuffer cqCodeLocal = new StringBuffer();
@@ -103,9 +105,10 @@ public class ListenerAllGroup {
             seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
         }
         try {
+            System.out.println(seTu.toString());
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
             imgInfoMapper.addImg(seTu);
-            cqCodeLocal.append(cqCodeUtil.getCQCode_Image(seTu.getUuid() + seTu.getFormat()).toString() + "\n");
+            cqCodeLocal.append(cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\" + seTu.getUuid() + seTu.getFormat()).toString() + "\n");
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
             cqCodeLocal.append("P站ID:" + seTu.getId());
         } catch (Exception e) {
@@ -120,6 +123,7 @@ public class ListenerAllGroup {
     @Filter(value = {".我"})
     public void sweet(GroupMsg msg, MsgSender sender) {
         CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
+        KQCodeUtils.INSTANCE.toCq("at", "qq=" + msg.getQQ());
         String sendMsg;
         switch (msg.getMsg().substring(0, 1)) {
             case "舔":
@@ -142,7 +146,7 @@ public class ListenerAllGroup {
     @Filter(value = {".[她,他].*"})
     public void sweetAt(GroupMsg msg, MsgSender sender) {
         String msgStr = msg.getMsg();
-        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msgStr.substring(msgStr.indexOf("qq=") + 3, msgStr.length() - 1));
+        String at = KQCodeUtils.INSTANCE.toCq("at", "qq=" + msgStr.substring(msgStr.indexOf("target=") + 7, msgStr.length() - 1));
         String sendMsg;
         switch (msg.getMsg().substring(0, 1)) {
             case "舔":
@@ -158,7 +162,7 @@ public class ListenerAllGroup {
             default:
                 return;
         }
-        sender.SENDER.sendGroupMsg(msg, cqCode_at + " " + sendMsg);
+        sender.SENDER.sendGroupMsg(msg, at + " " + sendMsg);
     }
 
 

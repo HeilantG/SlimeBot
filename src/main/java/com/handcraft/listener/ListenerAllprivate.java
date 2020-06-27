@@ -39,7 +39,6 @@ public class ListenerAllprivate {
     //闲聊
     @Filter(value = {"[ \f\r\t\n].*"})
     public void iptkTalk(PrivateMsg msg, MsgSender sender) {
-        System.out.println("talk->" + msg);
         sender.SENDER.sendPrivateMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
     }
 
@@ -70,15 +69,6 @@ public class ListenerAllprivate {
     @Filter(value = {"来.*涩图"})
     public void setu(PrivateMsg msg, MsgSender sender) {
         ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "",0);
-
-        //System.out.println("开始下载");
-        /*
-         * local:
-         * C:\Users\HeilantG\Desktop\酷Q Pro\data\image\
-         * Server:
-         * C:\Users\Administrator\Desktop\酷Q Pro\data\image\
-         * */
-
         StringBuffer cqCodeLocal = new StringBuffer();
         try {
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
@@ -91,7 +81,6 @@ public class ListenerAllprivate {
         } finally {
             sender.SENDER.sendPrivateMsg(msg, cqCodeLocal.toString());
         }
-        // System.out.println(cqCodeLocal);
     }
 
     //嘴甜
