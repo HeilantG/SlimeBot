@@ -48,7 +48,7 @@ public class RemindClass {
     @Scheduled(cron = "0 0 12 * * ?")
     public void execute() {
         CQCode cqCode_atAll = cqCodeUtil.getCQCode_AtAll();
-        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\SlimeBot\\TimeTasks\\RemindClassQianDao.png");
+        CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClassQianDao.png");
         BotSender sender = botManager.defaultBot().getSender();
         sender.SENDER.sendGroupMsg(classQQCode, cqCode_image.toString() + cqCode_atAll.toString());
     }
@@ -87,7 +87,7 @@ public class RemindClass {
                 long minute = between % 3600 / 60;
                 if (hour == 0 && minute > 0 && minute < 40) {
                     sender.SENDER.sendGroupMsg(classQQCode, cqCodeUtil.getCQCode_AtAll().toString() +
-                            cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\SlimeBot\\TimeTasks\\RemindClass.jpg"));
+                            cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClass.jpg"));
                     sender.SENDER.sendGroupMsg(classQQCode, "这节课是" + classInfo.getTeacher() + "老师的" + classInfo.getName());
                     DelaySender delaySender = new DelaySender(sender.SENDER, 900);
                     delaySender.sendGroupMsg(classQQCode, "还有" + (minute - 15) + "就要上课了,快去腾讯会议报道");
