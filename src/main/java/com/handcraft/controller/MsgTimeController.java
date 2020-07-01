@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
+/**
+ * 定时提醒接口
+ *
+ * @author Heilant Gong
+ * {@link this#queryAll()} 查询所有提醒信息
+ * {@link this#insert(MsgTime)} 添加
+ * {@link this#delete(MsgTime)} 删除
+ */
 @Controller
 public class MsgTimeController {
 

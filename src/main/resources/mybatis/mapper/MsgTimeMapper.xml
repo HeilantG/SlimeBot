@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.handcraft.mapper.MsgTimeMapper">
     <select id="queryAll" resultType="msgTime">
-        select * from slimebot.msgtime;
+        select * from msgtime;
     </select>
     <insert id="insert">
         insert into msgTime (uuid, qqCode, sendTime, msg, at)

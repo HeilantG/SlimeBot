@@ -4,28 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
 /**
- * 提醒消息
+ * 私聊消息实体类
  *
  * @author Heilant Gong
- * <p>
- * {@link this#uuid} 唯一标识
- * {@link this#qqCode} 发送群号
- * {@link this#sendTime} 发送时间
- * {@link this#msg} 提示消息
- * {@link this#at} 是否At全体成员
+ * {@link this#msg} 消息内容
+ * {@link this#qqCode} 发送者qq号
  */
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Data
-public class MsgTime {
-    String uuid;
+@ToString
+@Accessors(chain = true)
+public class PrivateTalkMsg {
+    String msg;
     String qqCode;
     String sendTime;
-    String msg;
-    Boolean at;
 }

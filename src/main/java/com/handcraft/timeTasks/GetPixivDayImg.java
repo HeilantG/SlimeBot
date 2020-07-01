@@ -16,8 +16,17 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 
-// 每早定时获取P站日图
 
+/**
+ * 每早定时获取P站日图
+ * 暂时出现问题 待修复
+ *
+ * @author Heilant Gong
+ * <p>
+ * 使用了Spring自带的{@link Scheduled} 进行定时任务
+ * {@link this#getDayImg} 获取每日细腻
+ * {@link this#sendDayImg} 发送每日日图
+ */
 @Component
 @EnableScheduling
 public class GetPixivDayImg {
@@ -53,7 +62,7 @@ public class GetPixivDayImg {
     @Scheduled(cron = "0 0 12 * * ?")
     public void sendDayImg() {
         BotSender sender = botManager.defaultBot().getSender();
-        sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
+        //sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
         List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());

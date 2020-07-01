@@ -3,8 +3,11 @@ package com.handcraft.features.qrCode;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Heilant Gong
  * 创建QrCode
+ * 接口来自：https://tool.oschina.net/action/qrcode/generate?data=
+ *
+ * @author Heilant Gong
+ * 未实现
  */
 @Component
 public class qrCode {

@@ -1,5 +1,8 @@
 package com.handcraft.features.programmerCalendar;
 
+/**
+ * 老黄历实体类
+ */
 public enum SpecialsEnum {
     SPECIALS(2014, "bad", "待在男（女）友身边", "脱团火葬场，入团保平安。");
 

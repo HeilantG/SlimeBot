@@ -14,6 +14,15 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 涩图获取以及P站日图
+ * 接口来源于:https://api.lolicon.app
+ *
+ * @author Heilant Gong
+ * <p> 等待重写 代码过于复杂，已经到了无法修改的地步
+ * {@link this#getSeTu(String, String, int)} 根据关键字 获取一张涩图
+ * {@link this#getDay()} 获取当日日图
+ */
 @Component
 public class PixivMsg {
 
@@ -24,7 +33,12 @@ public class PixivMsg {
     @Resource
     ImgInfo imgInfo;
 
-    // 获取涩图
+    /**
+     * @param key     网站密钥
+     * @param keyword 涩图关键字
+     * @param r18     是否为R18
+     * @return 图片基本信息
+     */
     public ImgInfo getSeTu(String key, String keyword, int r18) {
         String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true&keyword=" + keyword;
         //处理信息
@@ -62,8 +76,9 @@ public class PixivMsg {
         return imgInfo;
     }
 
+
     /**
-     * 获取日图
+     * @return 日图List(十张图片
      */
     public List<ImgInfo> getDay() {
         List<ImgInfo> imgInfos = new ArrayList<>();

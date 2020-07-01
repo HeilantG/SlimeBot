@@ -7,8 +7,16 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
+ * 智慧发言
+ *
  * @author HeilantG
- * 智慧发言 接口来自 https://s.nmsl8.club/
+ * <p>
+ * 这是甜/舔/毒消息创建类
+ * 嘴甜和毒鸡汤消息来自 https://s.nmsl8.club/
+ * 舔狗消息来自 http://api.yyhy.me/tg.php?type=api
+ * {@link this#getSweet()} 嘴甜
+ * {@link this#getTianGou()} 舔狗
+ * {@link this#getPoisonousChickenSoup()} 毒鸡汤
  */
 @Component
 public class CreateApiMsg {

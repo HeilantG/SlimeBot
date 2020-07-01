@@ -9,6 +9,7 @@ create table imginfo
     `imageUrl` text COMMENT '图片链接',
     `tags`     text COMMENT 'tag',
     `date`       DATE COMMENT '图片日期'
+    `format` varchar(10) COMMENT '图片格式'
 );
 insert into imginfo (uuid, id, title, imageUrl, tags)
 values ('1', '1', '1', '1', '1');
@@ -29,11 +30,30 @@ alter table imginfo convert to character set utf8mb4 collate utf8mb4_bin;
 
 /*全体成员通知*/
 create table msgTime(
-                        `uuid` varchar(40) primary key ,
-                        `qqCode` varchar (20) COMMENT '通知群号',
-                        `sendTime` datetime COMMENT '通知时间',
-                        `msg` text COMMENT '通知内容',
-                        `at` boolean COMMENT '是否At'
+    `uuid` varchar(40) primary key ,
+    `qqCode` varchar (20) COMMENT '通知群号',
+    `sendTime` datetime COMMENT '通知时间',
+    `msg` text COMMENT '通知内容',
+    `at` boolean COMMENT '是否At'
 );
 insert into msgTime (uuid, qqCode, sendTime, msg)
 values ('addasda','123456',now(),'123');
+
+/*私聊消息存储表*/
+create table privateMsgRecord(
+    `msg` text COMMENT '消息内容',
+    `qqCode` varchar(20) COMMENT '发送者',
+    `sendTime` datetime COMMENT '接收时间'
+);
+insert into  privateMsgRecord(msg,qqCode,sendTime)
+values ('测试','123456',now());
+
+/*群聊息存储表*/
+create table groupMsgRecord(
+    `msg` text COMMENT '消息内容',
+    `qqCode` varchar(20) COMMENT '发送者',
+    `groupCode` varchar(20) COMMENT '群号',
+    `sendTime` datetime COMMENT '接收时间'
+);
+insert into  groupMsgRecord(msg,qqCode,groupCode,sendTime)
+values ('测试','123456','654321',now());

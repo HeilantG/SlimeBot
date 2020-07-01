@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 /**
+ * 课表信息接口
+ *
  * @author HeilantG
- * 课表信息
+ * {@link this#select}查询所有课表
+ * {@link this#insert}添加一次课
+ * {@link this#delete}根据uuid删除一次课
  */
 @Controller
 public class ClassInfoController {
