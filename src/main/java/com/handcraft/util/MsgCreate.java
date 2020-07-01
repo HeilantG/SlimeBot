@@ -3,9 +3,7 @@ package com.handcraft.util;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.chaoxing.GetAnswer;
 import com.handcraft.features.programmerCalendar.ProgrammerCalendar;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,15 +12,23 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//信息文本拼接工具
 
+/**
+ * 信息文本拼接工具
+ *
+ * @author Heilant Gong
+ */
 @Component
 public class MsgCreate {
     private CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Resource
     GetAnswer getAnswer;
 
-    //菜单
+    /**
+     * 生成菜单
+     *
+     * @return 菜单字符串
+     */
     public String getMenu() {
         StringBuffer sb = new StringBuffer();
         sb.append("我的功能:\n");
@@ -42,12 +48,12 @@ public class MsgCreate {
         return sb.toString();
     }
 
-    //查题
-    public String getAnswer(String question) {
-        return getAnswer.get(question);
-    }
 
-    //每日消息
+    /**
+     * 每日清晨信息
+     *
+     * @return 每日信息
+     */
     public String getDayMsg() {
         // 最终返回的文字
         StringBuilder str = new StringBuilder();
@@ -62,11 +68,21 @@ public class MsgCreate {
         return str.toString();
     }
 
-    //老黄历
+
+    /**
+     * 老黄历
+     *
+     * @param key 为是否显示今日日期
+     * @return 老黄历主体
+     */
     public String getProgrammerCalendar(int... key) {
         return ProgrammerCalendar.getCalendar(key);
     }
 
+    /**
+     * @param day 星期信息
+     * @return 每日信息头
+     */
     private String dayHello(int day) {
         StringBuilder str = new StringBuilder();
         String[] arr = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
@@ -78,8 +94,13 @@ public class MsgCreate {
         return str.toString();
     }
 
-    //转码
 
+    /**
+     * Unicode转UTF-8
+     *
+     * @param str 需要转码的字符串
+     * @return 转码后的字符
+     */
     public String unicodeToString(String str) {
 
         Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
@@ -97,9 +118,35 @@ public class MsgCreate {
         return str;
     }
 
-    //okhttp 方法
+    /**
+     * httpGet方法 包装
+     *
+     * @param url 访问的url
+     * @return 返回值
+     */
     public String okHttpGetMethod(String url) {
         OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @param url  请求地址
+     * @param json 上报内容
+     * @return 返回值
+     */
+    public String okHttpPostMethod(String url, String json) {
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, json);
 
         Request request = new Request.Builder()
                 .url(url)

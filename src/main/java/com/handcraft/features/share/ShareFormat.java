@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 解析qq分享
+ *
+ * @author Heilant Gong
+ * 本质为操作字符串
+ * 需要重构，更换为Mirai核心后，json格式出现改变
+ * 争取解析所有分享
+ */
 @Component
 public class ShareFormat {
     public List<String> format(String str) {

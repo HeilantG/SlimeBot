@@ -8,20 +8,27 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * 字符串工具类
+ *
  * @author HeilantG
- * uuid 工具类 组要用来转换格式
  */
 @Component
 public class StringUtil {
+
     /**
-     * 获取uuid
+     * 获取一个去掉-的uuid
+     *
+     * @return uuid
      */
     public String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+
     /**
      * 获取当前日期 并转变为String
+     *
+     * @return 当前日期的String
      */
     public String getDate() {
         Date dt = new Date();
@@ -30,8 +37,12 @@ public class StringUtil {
         return sdf.format(dt);
     }
 
+
     /**
-     * 根据给定Date 格式化为String日期
+     * 根据给定Date 格式化为String
+     *
+     * @param date 所需格式化的Date
+     * @return 格式化后的date
      */
     public String formatDate(Date date) {
         //最后的aa表示“上午”或“下午”    HH表示24小时制    如果换成hh表示12小时制
@@ -39,8 +50,12 @@ public class StringUtil {
         return sdf.format(date);
     }
 
+
     /**
      * 获取当前日期的前后某一天的日期
+     *
+     * @param i 前一天或后一天
+     * @return 日期
      */
     public Date getDesignatedDate(int i) {
         //最后的aa表示“上午”或“下午”    HH表示24小时制    如果换成hh表示12小时制

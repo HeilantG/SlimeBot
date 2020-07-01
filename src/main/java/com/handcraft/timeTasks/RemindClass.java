@@ -23,8 +23,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author HeilantG
  * 提醒上课小助手
+ *
+ * @author HeilantG
  */
 @Component
 @EnableScheduling
@@ -43,8 +44,9 @@ public class RemindClass {
     @Resource
     private BotManager botManager;
 
-    //签到
-
+    /**
+     * 每日十二点提醒签到
+     */
     @Scheduled(cron = "0 0 12 * * ?")
     public void execute() {
         CQCode cqCode_atAll = cqCodeUtil.getCQCode_AtAll();
@@ -53,8 +55,10 @@ public class RemindClass {
         sender.SENDER.sendGroupMsg(classQQCode, cqCode_image.toString() + cqCode_atAll.toString());
     }
 
-    //每日早报
 
+    /**
+     * 每日早报
+     */
     @Scheduled(cron = "0 0 7 * * ?")
     public void dayHello() {
         BotSender sender = botManager.defaultBot().getSender();
@@ -64,8 +68,9 @@ public class RemindClass {
         sender.SENDER.sendGroupMsg("190375193", dayMsg);
     }
 
-    // 每过30分钟检查上课
-
+    /**
+     * 每过30分钟检查上课
+     */
     @Scheduled(cron = "0 0/30 * * * ?")
     public void remind() {
         BotSender sender = botManager.defaultBot().getSender();
@@ -98,8 +103,9 @@ public class RemindClass {
 
 
     /**
-     * @throws ParseException 每过
-     *                        一分钟检测数据库中是否有提醒消息
+     * 每过一分钟检测数据库中是否有提醒消息
+     *
+     * @throws ParseException simpleFormat格式化
      */
     @Scheduled(cron = "0 0/1 * * * ?")
     public void atAllMsg() throws ParseException {
