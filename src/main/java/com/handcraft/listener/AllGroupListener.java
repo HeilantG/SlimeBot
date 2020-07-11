@@ -7,6 +7,7 @@ import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
+import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgInfoMapper;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,7 +28,7 @@ import java.util.List;
  * 这里是公用监听器 对所有群开放
  *
  * @author Heilant Gong
- *
+ * <p>
  * {@link OnGroup} 此类为监听所有监听群消息的方法
  *
  * <p>方法作用说明
@@ -37,6 +39,7 @@ import java.util.List;
  * {@link this#emj(GroupMsg, MsgSender)} 发送一个emj
  * {@link this#sexImg(GroupMsg, MsgSender)} 获取一张涩图
  * {@link this#sweet(GroupMsg, MsgSender)} 舔/甜/毒狗模式
+ * {@link this#getLink(GroupMsg, MsgSender)} 百度云解析
  */
 @Component
 @OnGroup
@@ -57,6 +60,8 @@ public class AllGroupListener {
     StringUtil stringUtil;
     @Resource
     ImgInfoMapper imgInfoMapper;
+    @Resource
+    YunGet yunGet;
 
 
     @Filter(value = {".*CQ:rich.*"})
@@ -179,5 +184,32 @@ public class AllGroupListener {
         sender.SENDER.sendGroupMsg(msg, at + " " + sendMsg);
     }
 
+    //百度云解析
+    @Filter(value = {"share=.*"})
+    public void getLink(GroupMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        String link = null;
+        String pwd = null;
+        try {
+            link = msgStr.substring(msgStr.indexOf("share=") + 6, msgStr.indexOf("pwd") - 1);
+            pwd = msgStr.substring(msgStr.indexOf("pwd") + 4);
+        } catch (Exception e) {
+            sender.SENDER.sendGroupMsg(msg, "输入有误,请确保格式正确 示例:\nshare=xxx&pwd=bbb xxx代表百度分享id bbb代表密码");
+            return;
+        }
+        System.err.println(link);
+        System.err.println(pwd);
+        Map<String, String> stringStringMap = yunGet.get(link, pwd);
+        if (stringStringMap == null) {
+            sender.SENDER.sendGroupMsg(msg, "访问超时,请稍后再试");
+            return;
+        }
+        StringBuffer sendStr = new StringBuffer();
+        sendStr.append("文件名为:").append(stringStringMap.get("name")).append("\n");
+        sendStr.append("大小为:").append(stringStringMap.get("size")).append("\n");
+        sendStr.append("下载链接:").append(stringStringMap.get("link")).append("\n");
+        sendStr.append("请使用IDM进行下载");
+        sender.SENDER.sendGroupMsg(msg, sendStr.toString());
+    }
 
 }

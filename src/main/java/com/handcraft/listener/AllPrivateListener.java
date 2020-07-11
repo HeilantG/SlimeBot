@@ -8,6 +8,7 @@ import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
+import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.chaoxing.GetAnswer;
 import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
+import java.util.Map;
 
 
 /**
@@ -36,6 +38,7 @@ import java.util.Calendar;
  * {@link this#programmerCalendar(PrivateMsg, MsgSender)} 程序员的老黄历
  * {@link this#sexImg(PrivateMsg, MsgSender)} 涩图
  * {@link this#sweet(PrivateMsg, MsgSender)} 舔/甜/毒狗模式
+ * {@link this#getLink(PrivateMsg, MsgSender)} 百度云解析
  */
 
 @Component
@@ -57,6 +60,8 @@ public class AllPrivateListener {
     GetAnswer getAnswer;
     @Resource
     ImgInfoMapper imgInfoMapper;
+    @Resource
+    YunGet yunGet;
 
     @Filter(value = {"[ \f\r\t\n].*"})
     public void iptkTalk(PrivateMsg msg, MsgSender sender) {
@@ -116,6 +121,32 @@ public class AllPrivateListener {
                 return;
         }
         sender.SENDER.sendPrivateMsg(msg, sendMsg);
+    }
+
+    //百度云解析
+    @Filter(value = {"share=.*"})
+    public void getLink(PrivateMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        String link = null;
+        String pwd = null;
+        try {
+            link = msgStr.substring(msgStr.indexOf("share=") + 6, msgStr.indexOf("pwd") - 1);
+            pwd = msgStr.substring(msgStr.indexOf("pwd") + 4);
+        } catch (Exception e) {
+            sender.SENDER.sendPrivateMsg(msg, "输入有误,请确保格式正确 示例:\nshare=xxx&pwd=bbb xxx代表百度分享id bbb代表密码");
+            return;
+        }
+        Map<String, String> stringStringMap = yunGet.get(link, pwd);
+        if (stringStringMap == null) {
+            sender.SENDER.sendPrivateMsg(msg.getQQCode(), "访问超时,请稍后再试");
+            return;
+        }
+        StringBuffer sendStr = new StringBuffer();
+        sendStr.append("文件名为:").append(stringStringMap.get("name")).append("\n");
+        sendStr.append("大小为:").append(stringStringMap.get("size")).append("\n");
+        sendStr.append("下载链接:").append(stringStringMap.get("link")).append("\n");
+        sendStr.append("请使用IDM进行下载");
+        sender.SENDER.sendPrivateMsg(msg, sendStr.toString());
     }
 
 

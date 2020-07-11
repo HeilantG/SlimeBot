@@ -35,8 +35,9 @@ public class MsgCreate {
         sb.append(cqCodeUtil.getCQCode_Face("202") + "群聊私聊都支持:\n");
         sb.append("1.获取今日程序员老黄历(来.*老黄历)\n");
         sb.append("2.嘴甜or毒鸡汤模式(舔我\\毒我)\n");
-        sb.append("3.闲聊模式(在说的话前面加个空格:例如( 你好))\n");
-        sb.append("4.解析B站\\知乎小程序分享\n");
+        sb.append("3.闲聊模式(在说的话前面加个空格:例如( 你好))(暂时关闭\n");
+        sb.append("4.解析B站\\知乎小程序分享(正在修复\n");
+        sb.append("5.百度云直连提取(需配合IDM)(share=xxx&pwd=bbb\n");
         sb.append(cqCodeUtil.getCQCode_Face("179") + "仅限私聊\n");
         sb.append("1.随机一张图(来.*涩图)\n");
         sb.append("2.网课题目查询(查题:XXX)\n");
@@ -126,7 +127,6 @@ public class MsgCreate {
      */
     public String okHttpGetMethod(String url) {
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();

@@ -7,18 +7,19 @@ import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
+import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
-import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
 import com.simplerobot.modules.delay.DelaySender;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,7 +42,7 @@ public class AdminListener {
     @Resource
     StringUtil stringUtil;
     @Resource
-    MsgCreate msgCreate;
+    YunGet yunGet;
     @Resource
     ImgDownload imgDownload;
     @Resource
@@ -102,6 +103,5 @@ public class AdminListener {
         // 用原本的sender先直接发送一个消息
         sender.SENDER.sendPrivateMsg(msg.getQQCode(), "直接发送： " + msg.getMsg());
     }
-
 
 }
