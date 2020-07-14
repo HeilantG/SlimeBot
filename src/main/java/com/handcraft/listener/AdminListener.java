@@ -19,14 +19,12 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 自用私聊测试
  *
  * @author HeilantG
- * {@link this#share(PrivateMsg, MsgSender)} 分享解析
  * {@link this#getImg(PrivateMsg, MsgSender)} 手动获取当日日图
  * {@link this#selectImg(PrivateMsg, MsgSender)} 显示当日日图
  * {@link this#testYs(PrivateMsg, MsgSender)} 延时消息
@@ -47,16 +45,6 @@ public class AdminListener {
     ImgDownload imgDownload;
     @Resource
     ShareFormat shareFormat;
-
-    @Filter(code = {"1310147115"}, value = {".*CQ:rich.*"})
-    public void share(PrivateMsg msg, MsgSender sender) {
-        List<String> format = shareFormat.format(msg.getMsg());
-        StringBuffer sb = new StringBuffer();
-        sb.append("title:" + format.get(0) + "\n");
-        sb.append("url:" + format.get(1));
-        sender.SENDER.sendPrivateMsg(msg, sb.toString());
-    }
-
 
     @Filter(code = {"1310147115"}, value = {"获取今日"})
     public void getImg(PrivateMsg msg, MsgSender sender) {
@@ -79,11 +67,7 @@ public class AdminListener {
         List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
             CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
-            try {
-                sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
-            } catch (Exception e) {
-                continue;
-            }
+            sender.SENDER.sendPrivateMsg(msg, cqCode_image.toString());
         }
     }
 

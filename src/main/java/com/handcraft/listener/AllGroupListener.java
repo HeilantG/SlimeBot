@@ -1,14 +1,18 @@
 package com.handcraft.listener;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.template.OnGroup;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
+import com.forte.qqrobot.beans.types.KeywordMatchType;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.features.qqAi.QQAiTalk;
 import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
@@ -19,7 +23,7 @@ import com.simplerobot.modules.utils.KQCodeUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -33,7 +37,7 @@ import java.util.Map;
  *
  * <p>方法作用说明
  * {@link this#share(GroupMsg, MsgSender)} 解析qq的小程序/分享 还原原始链接
- * this#iptkTalk(GroupMsg, MsgSender) 闲聊(暂时禁用
+ * {@link this#qqAiTalk(GroupMsg, MsgSender)} 闲聊
  * {@link this#menu(GroupMsg, MsgSender)} 机器人菜单
  * {@link this#programmerCalendar(GroupMsg, MsgSender)} 主动获取老黄历
  * {@link this#emj(GroupMsg, MsgSender)} 发送一个emj
@@ -45,7 +49,7 @@ import java.util.Map;
 @OnGroup
 public class AllGroupListener {
 
-    private CQCodeUtil cqCodeUtil = CQCodeUtil.build();
+    CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Resource
     MsgCreate msgCreate;
     @Resource
@@ -62,23 +66,35 @@ public class AllGroupListener {
     ImgInfoMapper imgInfoMapper;
     @Resource
     YunGet yunGet;
+    @Resource
+    QQAiTalk qqAiTalk;
 
-
-    @Filter(value = {".*CQ:rich.*"})
-    public void share(GroupMsg msg, MsgSender sender) {
-        List<String> format = shareFormat.format(msg.getMsg());
-        StringBuffer sb = new StringBuffer();
-        String local = imgDownload.biliDownload(format.get(2), null, stringUtil.getUUID());
-        sb.append(cqCodeUtil.getCQCode_Image(local) + "\n");
-        sb.append("标题: " + format.get(0) + "\n");
-        sb.append("链接: " + format.get(1));
-        sender.SENDER.sendGroupMsg(msg, sb.toString());
+    @Filter(value = {" .*"}, keywordMatchType = KeywordMatchType.FIND)
+    public void qqAiTalk(GroupMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        //移除开头的空格
+        msgStr = msgStr.substring(1);
+        String talk = qqAiTalk.getTalk(msgStr, msg.getQQCode());
+        JSONObject jsonObject = JSON.parseObject(talk);
+        String answer = jsonObject.getJSONObject("data").getString("answer");
+        if (null == answer) {
+            answer = "听不懂你在说什么呢";
+        }
+        sender.SENDER.sendGroupMsg(msg, answer);
     }
 
-    /*@Filter(value = {"[ \f\r\t\n].*"})
-    public void iptkTalk(GroupMsg msg, MsgSender sender) {
-        sender.SENDER.sendGroupMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
-    }*/
+
+    @Filter(value = {".*CQ:app.*"})
+    public void share(GroupMsg msg, MsgSender sender) {
+        HashMap<String, String> format = shareFormat.format(msg.toString());
+        StringBuffer sendSb = new StringBuffer();
+        String local = imgDownload.biliDownload(format.get("preview"), System.getProperty("user.dir") + "\\image\\share\\", stringUtil.getUUID());
+        sendSb.append(cqCodeUtil.getCQCode_Image(local) + "\n");
+        sendSb.append("标题: " + format.get("desc") + "\n");
+        sendSb.append("链接: " + format.get("qqdocurl"));
+        sender.SENDER.sendGroupMsg(msg, sendSb.toString());
+    }
+
 
     @Filter(value = {".*菜单", ".*你会什么"}, at = true)
     public void menu(GroupMsg msg, MsgSender sender) {
@@ -114,14 +130,12 @@ public class AllGroupListener {
             seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
         }
         try {
-            System.out.println(seTu.toString());
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
             imgInfoMapper.addImg(seTu);
             cqCodeLocal.append(cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\" + seTu.getUuid() + seTu.getFormat()).toString() + "\n");
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
             cqCodeLocal.append("P站ID:" + seTu.getId());
         } catch (Exception e) {
-            System.out.println(e.toString());
         } finally {
             sender.SENDER.sendGroupMsg(msg, cqCodeLocal.toString());
         }

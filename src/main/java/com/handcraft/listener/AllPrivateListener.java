@@ -1,17 +1,20 @@
 package com.handcraft.listener;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
 import com.forte.qqrobot.anno.template.OnPrivate;
 import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
+import com.forte.qqrobot.beans.types.KeywordMatchType;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.chaoxing.GetAnswer;
-import com.handcraft.features.iptk.IptkBotTalk;
 import com.handcraft.features.pixiv.PixivMsg;
+import com.handcraft.features.qqAi.QQAiTalk;
 import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
 import com.handcraft.util.ImgDownload;
@@ -32,7 +35,7 @@ import java.util.Map;
  * {@link OnPrivate} 此类为监听所有细聊消息的方法
  *
  * <p>方法作用说明
- * {@link this#iptkTalk(PrivateMsg, MsgSender)} 闲聊模式 很蠢
+ * {@link this#qqAiTalk(PrivateMsg, MsgSender)} 闲聊模式
  * {@link this#getAnswer(PrivateMsg, MsgSender)} 查题
  * {@link this#menu(PrivateMsg, MsgSender)} 菜单
  * {@link this#programmerCalendar(PrivateMsg, MsgSender)} 程序员的老黄历
@@ -55,17 +58,27 @@ public class AllPrivateListener {
     @Resource
     CreateApiMsg createApiMsg;
     @Resource
-    IptkBotTalk iptkBotTalk;
-    @Resource
     GetAnswer getAnswer;
     @Resource
     ImgInfoMapper imgInfoMapper;
     @Resource
     YunGet yunGet;
+    @Resource
+    QQAiTalk qqAiTalk;
 
-    @Filter(value = {"[ \f\r\t\n].*"})
-    public void iptkTalk(PrivateMsg msg, MsgSender sender) {
-        sender.SENDER.sendPrivateMsg(msg, iptkBotTalk.getTalk(msg.getMsg().substring(1)));
+    @Filter(value = {" .*"}, keywordMatchType = KeywordMatchType.FIND)
+    public void qqAiTalk(PrivateMsg msg, MsgSender sender) {
+        String msgStr = msg.getMsg();
+        //移除开头的空格
+        msgStr = msgStr.substring(1);
+        System.out.println(msgStr);
+        String talk = qqAiTalk.getTalk(msgStr, msg.getQQCode());
+        JSONObject jsonObject = JSON.parseObject(talk);
+        String answer = jsonObject.getJSONObject("data").getString("answer");
+        if (null == answer) {
+            answer = "听不懂你在说什么呢";
+        }
+        sender.SENDER.sendPrivateMsg(msg, answer);
     }
 
     @Filter(value = {"查题:.*", "查题：.*"})
@@ -138,7 +151,7 @@ public class AllPrivateListener {
         }
         Map<String, String> stringStringMap = yunGet.get(link, pwd);
         if (stringStringMap == null) {
-            sender.SENDER.sendPrivateMsg(msg.getQQCode(), "访问超时,请稍后再试");
+            sender.SENDER.sendPrivateMsg(msg.getQQCode(), "访问超时,请先检查链接是否失效,若链接正常 请稍后再试");
             return;
         }
         StringBuffer sendStr = new StringBuffer();

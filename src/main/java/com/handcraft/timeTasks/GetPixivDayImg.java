@@ -65,7 +65,7 @@ public class GetPixivDayImg {
         //sender.SENDER.sendGroupMsg("361081715", "今日P站日榜");
         List<ImgInfo> imgInfos = imgInfoMapper.queryImgListByDate(stringUtil.getDate());
         for (ImgInfo imgInfo : imgInfos) {
-            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(imgInfo.getUuid() + imgInfo.getFormat());
+            CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\" + imgInfo.getUuid() + imgInfo.getFormat());
             try {
                 StringBuffer str = new StringBuffer();
                 //写入图片CQ码

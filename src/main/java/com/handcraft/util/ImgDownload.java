@@ -106,7 +106,7 @@ public class ImgDownload {
         } catch (Exception e) {
         }
         System.out.println(uuid + imgFormat);
-        return uuid + imgFormat;
+        return path + uuid + imgFormat;
     }
 
 }

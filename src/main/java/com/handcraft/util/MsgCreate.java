@@ -1,5 +1,6 @@
 package com.handcraft.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.chaoxing.GetAnswer;
 import com.handcraft.features.programmerCalendar.ProgrammerCalendar;
@@ -157,5 +158,26 @@ public class MsgCreate {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getdata(String url, JSONObject jsonObject) {
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        //1 . 拿到OkHttpClient对象
+        OkHttpClient client = new OkHttpClient();
+        //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+        RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
+        //3 . 构建Request,将FormBody作为Post方法的参数传入
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
