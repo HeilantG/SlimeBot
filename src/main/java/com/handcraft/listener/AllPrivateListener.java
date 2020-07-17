@@ -66,7 +66,7 @@ public class AllPrivateListener {
     @Resource
     QQAiTalk qqAiTalk;
 
-    @Filter(value = {" .*"}, keywordMatchType = KeywordMatchType.FIND)
+    @Filter(value = {" .*"}, keywordMatchType = KeywordMatchType.RE_CQCODE_REGEX)
     public void qqAiTalk(PrivateMsg msg, MsgSender sender) {
         String msgStr = msg.getMsg();
         //移除开头的空格

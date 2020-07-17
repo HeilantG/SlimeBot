@@ -2,7 +2,6 @@ package com.handcraft.features.qqAi;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jsoup.Jsoup;
@@ -26,8 +25,6 @@ import java.util.TreeMap;
 public class QQAiTalk {
     @Resource
     private StringUtil stringUtil;
-    @Resource
-    MsgCreate msgCreate;
     private String appId = "2154598615";
     private String appKey = "4UQUZsClEkoNqN2z";
     private String link = "https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat";

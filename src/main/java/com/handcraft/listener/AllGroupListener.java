@@ -6,13 +6,13 @@ import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.template.OnGroup;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
-import com.forte.qqrobot.beans.types.KeywordMatchType;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.baiduyun.YunGet;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.qqAi.QQAiTalk;
+import com.handcraft.features.repeat.RepeatTalk;
 import com.handcraft.features.share.ShareFormat;
 import com.handcraft.mapper.ImgInfoMapper;
 import com.handcraft.pojo.ImgInfo;
@@ -36,6 +36,7 @@ import java.util.Map;
  * {@link OnGroup} 此类为监听所有监听群消息的方法
  *
  * <p>方法作用说明
+ * {@link this#repeat(GroupMsg, MsgSender)} 复读机
  * {@link this#share(GroupMsg, MsgSender)} 解析qq的小程序/分享 还原原始链接
  * {@link this#qqAiTalk(GroupMsg, MsgSender)} 闲聊
  * {@link this#menu(GroupMsg, MsgSender)} 机器人菜单
@@ -68,13 +69,34 @@ public class AllGroupListener {
     YunGet yunGet;
     @Resource
     QQAiTalk qqAiTalk;
+    @Resource
+    RepeatTalk repeatTalk;
 
-    @Filter(value = {" .*"}, keywordMatchType = KeywordMatchType.FIND)
+    @Filter(value = {".*今天的我"}, at = true)
+    public void todayMe(GroupMsg msg, MsgSender sender) {
+        String at = KQCodeUtils.INSTANCE.toCq("at", "qq=" + msg.getQQ());
+        String todayMe = createApiMsg.getTodayMe(msg.getQQCode(), sender.GETTER.getGroupMemberInfo(msg.getGroup(), msg.getQQCode()).getNickName());
+        sender.SENDER.sendGroupMsg(msg, at + todayMe);
+    }
+
+    @Filter
+    public void repeat(GroupMsg msg, MsgSender sender) {
+        String groupCode = msg.getGroupCode();
+        switch (groupCode) {
+            case "175183084":
+            case "641057857":
+            case "925295392":
+                return;
+        }
+        boolean judge = repeatTalk.judge(msg);
+        if (judge) {
+            sender.SENDER.sendGroupMsg(msg, msg.getMsg());
+        }
+    }
+
+    @Filter(value = {"芦苇.*"})
     public void qqAiTalk(GroupMsg msg, MsgSender sender) {
-        String msgStr = msg.getMsg();
-        //移除开头的空格
-        msgStr = msgStr.substring(1);
-        String talk = qqAiTalk.getTalk(msgStr, msg.getQQCode());
+        String talk = qqAiTalk.getTalk(msg.getMsg(), msg.getQQCode());
         JSONObject jsonObject = JSON.parseObject(talk);
         String answer = jsonObject.getJSONObject("data").getString("answer");
         if (null == answer) {
@@ -144,8 +166,7 @@ public class AllGroupListener {
 
     @Filter(value = {".我"})
     public void sweet(GroupMsg msg, MsgSender sender) {
-        CQCode cqCode_at = cqCodeUtil.getCQCode_At(msg.getQQ());
-        KQCodeUtils.INSTANCE.toCq("at", "qq=" + msg.getQQ());
+        String at = KQCodeUtils.INSTANCE.toCq("at", "qq=" + msg.getQQ());
         String sendMsg;
         switch (msg.getMsg().substring(0, 1)) {
             case "舔":
@@ -161,7 +182,7 @@ public class AllGroupListener {
             default:
                 return;
         }
-        sender.SENDER.sendGroupMsg(msg, cqCode_at + " " + sendMsg);
+        sender.SENDER.sendGroupMsg(msg, at + " " + sendMsg);
     }
     //定向嘴甜模式
 
@@ -215,7 +236,7 @@ public class AllGroupListener {
         System.err.println(pwd);
         Map<String, String> stringStringMap = yunGet.get(link, pwd);
         if (stringStringMap == null) {
-            sender.SENDER.sendGroupMsg(msg, "访问超时,请稍后再试");
+            sender.SENDER.sendGroupMsg(msg, "访问超时,请先检查链接是否失效,若链接正常 请稍后再试");
             return;
         }
         StringBuffer sendStr = new StringBuffer();
