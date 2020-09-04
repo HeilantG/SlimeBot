@@ -37,7 +37,8 @@ public class RemindClass {
     MsgCreate msgCreate;
     @Resource
     MsgTimeService msgTimeService;
-    String classQQCode = "816924822";
+    // 班级群号
+    private static String CLASS_QQ_CODE = "903811253";
     /**
      * 自定义送信器
      */
@@ -47,25 +48,26 @@ public class RemindClass {
     /**
      * 每日十二点提醒签到
      */
-    @Scheduled(cron = "0 0 12 * * ?")
+    //@Scheduled(cron = "0 0 12 * * ?")
     public void execute() {
         CQCode cqCode_atAll = cqCodeUtil.getCQCode_AtAll();
         CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClassQianDao.png");
         BotSender sender = botManager.defaultBot().getSender();
-        sender.SENDER.sendGroupMsg(classQQCode, cqCode_image.toString() + cqCode_atAll.toString());
+        sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCode_image.toString() + cqCode_atAll.toString());
     }
 
 
     /**
      * 每日早报
      */
-    @Scheduled(cron = "0 0 7 * * ?")
+    @Scheduled(cron = "0 0 8 * * ?")
     public void dayHello() {
         BotSender sender = botManager.defaultBot().getSender();
         String dayMsg = msgCreate.getDayMsg();
-        sender.SENDER.sendGroupMsg(classQQCode, dayMsg);
+        sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, dayMsg);
         sender.SENDER.sendGroupMsg("361081715", dayMsg);
-        sender.SENDER.sendGroupMsg("190375193", dayMsg);
+        //班级群
+        sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, dayMsg);
     }
 
     /**
@@ -91,11 +93,10 @@ public class RemindClass {
                 long hour = between % (24 * 3600) / 3600;
                 long minute = between % 3600 / 60;
                 if (hour == 0 && minute > 0 && minute < 40) {
-                    sender.SENDER.sendGroupMsg(classQQCode, cqCodeUtil.getCQCode_AtAll().toString() +
-                            cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClass.jpg"));
-                    sender.SENDER.sendGroupMsg(classQQCode, "这节课是" + classInfo.getTeacher() + "老师的" + classInfo.getName());
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll().toString() + "还有半个小时就要上课了 请同学们抓紧时间前往实训楼");
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, "这节课是" + classInfo.getTeacher() + "老师的" + classInfo.getName());
                     DelaySender delaySender = new DelaySender(sender.SENDER, 900);
-                    delaySender.sendGroupMsg(classQQCode, "还有" + (minute - 15) + "就要上课了,快去腾讯会议报道");
+                    delaySender.sendGroupMsg(CLASS_QQ_CODE, "还有" + (minute - 15) + "就要上课了,没到实训楼的同学抓紧了");
                 }
             }
         }
@@ -130,9 +131,9 @@ public class RemindClass {
             if (days == 0 && hours == 0 && minutes + 1 == 1) {
                 /*判断是否At*/
                 if (msgTime.getAt()) {
-                    sender.SENDER.sendGroupMsg(classQQCode, cqCodeUtil.getCQCode_AtAll() + msgTime.getMsg());
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll() + msgTime.getMsg());
                 } else {
-                    sender.SENDER.sendGroupMsg(classQQCode, msgTime.getMsg());
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, msgTime.getMsg());
                 }
             }
         }

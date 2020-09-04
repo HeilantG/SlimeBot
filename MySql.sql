@@ -8,7 +8,7 @@ create table imginfo
     `title`    varchar(100) COMMENT '标题',
     `imageUrl` text COMMENT '图片链接',
     `tags`     text COMMENT 'tag',
-    `date`       DATE COMMENT '图片日期'
+    `date`       DATE COMMENT '图片日期',
     `format` varchar(10) COMMENT '图片格式'
 );
 insert into imginfo (uuid, id, title, imageUrl, tags)

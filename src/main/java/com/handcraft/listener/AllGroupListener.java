@@ -140,8 +140,8 @@ public class AllGroupListener {
 
     @Filter(value = {"来.*[色|涩]图"})
     public void sexImg(GroupMsg msg, MsgSender sender) {
-        StringBuffer cqCodeLocal = new StringBuffer();
-        if (msg.getGroupCode().equals("175183084")) {
+        StringBuffer cqCodeLocal = new StringBuffer("");
+        if (msg.getGroupCode().equals("903811253") | msg.getGroupCode().equals("903811253")) {
             sender.SENDER.sendGroupMsg(msg, "别看涩图了,作业写了吗,妹子谈了嘛,没有你还在这看涩图");
             return;
         }
@@ -152,7 +152,7 @@ public class AllGroupListener {
             seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
         }
         try {
-            imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
+            imgDownload.download(seTu.getImageUrl(), System.getProperty("user.dir") + "\\image\\", seTu.getUuid());
             imgInfoMapper.addImg(seTu);
             cqCodeLocal.append(cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\" + seTu.getUuid() + seTu.getFormat()).toString() + "\n");
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");

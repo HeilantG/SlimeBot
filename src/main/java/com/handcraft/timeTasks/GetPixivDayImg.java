@@ -73,9 +73,9 @@ public class GetPixivDayImg {
                 str.append("标题: " + imgInfo.getTitle() + "\n");
                 str.append("P站ID: " + imgInfo.getId() + "\n");
                 str.append("tag: " + imgInfo.getTags());
+                //挥手
                 sender.SENDER.sendGroupMsg("361081715", str.toString());
                 sender.SENDER.sendGroupMsg("641057857", str.toString());
-
             } catch (Exception e) {
                 continue;
             }
