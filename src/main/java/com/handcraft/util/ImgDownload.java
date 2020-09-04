@@ -3,7 +3,6 @@ package com.handcraft.util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,8 +19,6 @@ import java.net.URLConnection;
  */
 @Component
 public class ImgDownload {
-    @Resource
-    StringUtil stringUtil;
 
     /**
      * 图片下载
