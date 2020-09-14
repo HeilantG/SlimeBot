@@ -6,7 +6,6 @@ import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.template.OnGroup;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.GroupMsg;
-import com.forte.qqrobot.beans.messages.result.GroupInfo;
 import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
@@ -21,6 +20,7 @@ import com.handcraft.util.ImgDownload;
 import com.handcraft.util.MsgCreate;
 import com.handcraft.util.StringUtil;
 import com.simplerobot.modules.utils.KQCodeUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -49,6 +49,7 @@ import java.util.Map;
  */
 @Component
 @OnGroup
+@Log4j2
 public class AllGroupListener {
 
     CQCodeUtil cqCodeUtil = CQCodeUtil.build();
@@ -141,16 +142,19 @@ public class AllGroupListener {
 
     @Filter(value = {"来.*[色|涩]图"})
     public void sexImg(GroupMsg msg, MsgSender sender) {
+        //接口key
+        String LOLIKEY = "348731155e9d5ed04a05b7";
         StringBuffer cqCodeLocal = new StringBuffer("");
-        if (msg.getGroupCode().equals("903811253") | msg.getGroupCode().equals("903811253")) {
+        if (msg.getGroupCode().equals("175183084") | msg.getGroupCode().equals("903811253")) {
             sender.SENDER.sendGroupMsg(msg, "别看涩图了,作业写了吗,妹子谈了嘛,没有你还在这看涩图");
             return;
         }
         String msgStr = msg.getMsg();
-        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", msgStr.substring(2, msgStr.length() - 2), 0);
+        ImgInfo seTu = pixivMsg.getSeTu(msgStr.substring(2, msgStr.length() - 2), 0);
+        // log.warn("涩图>>>>>>>>" + seTu.toString());
         if (seTu.getId().equals("0")) {
             cqCodeLocal.append("虽然没有指定类别的涩图，但是我找到了别的好康的\n");
-            seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
+            seTu = pixivMsg.getSeTu("", 0);
         }
         try {
             imgDownload.download(seTu.getImageUrl(), System.getProperty("user.dir") + "\\image\\", seTu.getUuid());
@@ -159,7 +163,10 @@ public class AllGroupListener {
             cqCodeLocal.append("标题:" + seTu.getTitle() + "\n");
             cqCodeLocal.append("P站ID:" + seTu.getId());
         } catch (Exception e) {
+            sender.SENDER.sendGroupMsg(msg, "哎鸭,涩图不见了呢");
+            e.printStackTrace();
         } finally {
+            // log.warn("cqCode>>>>>>>>>" + cqCodeLocal.toString());
             sender.SENDER.sendGroupMsg(msg, cqCodeLocal.toString());
         }
     }

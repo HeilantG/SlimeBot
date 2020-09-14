@@ -64,7 +64,6 @@ public class RemindClass {
     public void dayHello() {
         BotSender sender = botManager.defaultBot().getSender();
         String dayMsg = msgCreate.getDayMsg();
-        sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, dayMsg);
         sender.SENDER.sendGroupMsg("361081715", dayMsg);
         //班级群
         sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, dayMsg);
@@ -93,7 +92,8 @@ public class RemindClass {
                 long hour = between % (24 * 3600) / 3600;
                 long minute = between % 3600 / 60;
                 if (hour == 0 && minute > 0 && minute < 40) {
-                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll().toString() + "还有半个小时就要上课了 请同学们抓紧时间前往实训楼");
+                    CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClass.png");
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll().toString() + cqCode_image);
                     sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, "这节课是" + classInfo.getTeacher() + "老师的" + classInfo.getName());
                     DelaySender delaySender = new DelaySender(sender.SENDER, 900);
                     delaySender.sendGroupMsg(CLASS_QQ_CODE, "还有" + (minute - 15) + "就要上课了,没到实训楼的同学抓紧了");

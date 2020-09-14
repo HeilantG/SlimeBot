@@ -32,15 +32,16 @@ public class PixivMsg {
     MsgCreate msgCreate;
     @Resource
     ImgInfo imgInfo;
+    //网站密钥
+    private static String LOLI_KEY = "348731155e9d5ed04a05b7";
 
     /**
-     * @param key     网站密钥
      * @param keyword 涩图关键字
      * @param r18     是否为R18
      * @return 图片基本信息
      */
-    public ImgInfo getSeTu(String key, String keyword, int r18) {
-        String url = "https://api.lolicon.app/setu/?apikey=" + key + "&r18=" + r18 + "&size1200=true&keyword=" + keyword;
+    public ImgInfo getSeTu(String keyword, int r18) {
+        String url = "https://api.lolicon.app/setu/?apikey=" + LOLI_KEY + "&r18=" + r18 + "&size1200=true&keyword=" + keyword;
         //处理信息
         // 第一次取值
         JSONObject obj = JSONObject.parseObject(msgCreate.okHttpGetMethod(url));

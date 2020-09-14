@@ -101,7 +101,7 @@ public class AllPrivateListener {
     @Listen(MsgGetTypes.privateMsg)
     @Filter(value = {"来.*涩图"})
     public void sexImg(PrivateMsg msg, MsgSender sender) {
-        ImgInfo seTu = pixivMsg.getSeTu("348731155e9d5ed04a05b7", "", 0);
+        ImgInfo seTu = pixivMsg.getSeTu( "", 0);
         StringBuffer cqCodeLocal = new StringBuffer();
         try {
             imgDownload.download(seTu.getImageUrl(), null, seTu.getUuid());
