@@ -58,3 +58,10 @@
     + ~~需要自己写一个图片下载进行缓存~~ 完成
     + 进一步优化图片下载路径
 - ~~闲聊词库中有奇怪的词条~~ ~~暂时关闭 寻找更好的Ai~~ 更换了腾讯Ai
+
+# 鸣谢
+
+> [IntelliJ IDEA](https://zh.wikipedia.org/zh-hans/IntelliJ_IDEA) 是一个在各个方面都最大程度地提高开发人员的生产力的 IDE，适用于 JVM 平台语言。
+
+特别感谢 [JetBrains](https://www.jetbrains.com/?from=SlimeBot) 为开源项目提供免费的 [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=SlimeBot) 等 IDE 的授权  
+[<img src=".github/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=SlimeBot)
