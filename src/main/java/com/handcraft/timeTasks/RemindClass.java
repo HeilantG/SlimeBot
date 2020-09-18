@@ -93,7 +93,8 @@ public class RemindClass {
                 long minute = between % 3600 / 60;
                 if (hour == 0 && minute > 0 && minute < 40) {
                     CQCode cqCode_image = cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\TimeTasks\\RemindClass.png");
-                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll().toString() + cqCode_image);
+                    // sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCodeUtil.getCQCode_AtAll().toString() + cqCode_image);
+                    sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, cqCode_image.toString());
                     sender.SENDER.sendGroupMsg(CLASS_QQ_CODE, "这节课是" + classInfo.getTeacher() + "老师的" + classInfo.getName());
                     DelaySender delaySender = new DelaySender(sender.SENDER, 900);
                     delaySender.sendGroupMsg(CLASS_QQ_CODE, "还有" + (minute - 15) + "就要上课了,没到实训楼的同学抓紧了");

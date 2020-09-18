@@ -77,7 +77,7 @@ public class AllGroupListener {
     @Filter(value = {".*今天的我"}, at = true)
     public void todayMe(GroupMsg msg, MsgSender sender) {
         String at = KQCodeUtils.INSTANCE.toCq("at", "qq=" + msg.getQQ());
-        String todayMe = createApiMsg.getTodayMe(msg.getQQCode(), sender.GETTER.getGroupMemberInfo(msg.getGroup(), msg.getQQCode()).getNickName());
+        String todayMe = createApiMsg.getTodayMe(msg.getQQCode(), sender.GETTER.getGroupMemberInfo(msg.getGroup(), msg.getQQCode()).getNickname());
         sender.SENDER.sendGroupMsg(msg, at + todayMe);
     }
 

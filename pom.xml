@@ -11,7 +11,7 @@
     <groupId>com.handcraft</groupId>
     <artifactId>slimebot</artifactId>
     <!--每次commit需要更改一次版本号-->
-    <version>1.3-401</version>
+    <version>1.3-402</version>
     <name>slimebot</name>
     <description>Mirai bot</description>
 
@@ -21,7 +21,7 @@
         <commons-io>2.6</commons-io>
         <mod-delay-task>1.0-1.11</mod-delay-task>
         <mybatis-spring-boot-starter>2.1.1</mybatis-spring-boot-starter>
-        <component-mirai-spring-boot-starter>1.14.0</component-mirai-spring-boot-starter>
+        <component-mirai-spring-boot-starter>1.15.0</component-mirai-spring-boot-starter>
         <jsoup>1.13.1</jsoup>
     </properties>
 
