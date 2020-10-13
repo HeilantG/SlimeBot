@@ -20,11 +20,12 @@ import java.util.List;
  *
  * @author Heilant Gong
  * <p> 等待重写 代码过于复杂，已经到了无法修改的地步
- * {@link this#getSeTu(String, String, int)} 根据关键字 获取一张涩图
+ * {@link this#getSeTu(String, int)} 根据关键字 获取一张涩图
  * {@link this#getDay()} 获取当日日图
  */
 @Component
 public class PixivMsg {
+
 
     @Resource
     StringUtil stringUtil;

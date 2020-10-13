@@ -2,6 +2,7 @@ package com.handcraft.listener;
 
 import com.forte.qqrobot.anno.Filter;
 import com.forte.qqrobot.anno.Listen;
+import com.forte.qqrobot.anno.template.OnGroupMsgDelete;
 import com.forte.qqrobot.beans.cqcode.CQCode;
 import com.forte.qqrobot.beans.messages.msgget.PrivateMsg;
 import com.forte.qqrobot.beans.messages.types.MsgGetTypes;
@@ -45,6 +46,8 @@ public class AdminListener {
     ImgDownload imgDownload;
     @Resource
     ShareFormat shareFormat;
+
+    @OnGroupMsgDelete
 
     @Filter(code = {"1310147115"}, value = {"获取今日"})
     public void getImg(PrivateMsg msg, MsgSender sender) {
