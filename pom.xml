@@ -11,7 +11,7 @@
     <groupId>com.handcraft</groupId>
     <artifactId>slimebot</artifactId>
     <!--每次commit需要更改一次版本号-->
-    <version>1.3-402</version>
+    <version>1.3-500</version>
     <name>slimebot</name>
     <description>Mirai bot</description>
 

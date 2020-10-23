@@ -10,6 +10,7 @@ import com.forte.qqrobot.sender.MsgSender;
 import com.forte.qqrobot.utils.CQCodeUtil;
 import com.handcraft.features.api.CreateApiMsg;
 import com.handcraft.features.baiduyun.YunGet;
+import com.handcraft.features.cover.CoverImg;
 import com.handcraft.features.pixiv.PixivMsg;
 import com.handcraft.features.qqAi.QQAiTalk;
 import com.handcraft.features.repeat.RepeatTalk;
@@ -24,6 +25,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,7 @@ import java.util.Map;
 @Log4j2
 public class AllGroupListener {
 
+
     CQCodeUtil cqCodeUtil = CQCodeUtil.build();
     @Resource
     MsgCreate msgCreate;
@@ -73,6 +76,8 @@ public class AllGroupListener {
     QQAiTalk qqAiTalk;
     @Resource
     RepeatTalk repeatTalk;
+    @Resource
+    CoverImg coverImg;
 
     @Filter(value = {".*今天的我"}, at = true)
     public void todayMe(GroupMsg msg, MsgSender sender) {
@@ -105,6 +110,13 @@ public class AllGroupListener {
             answer = "听不懂你在说什么呢";
         }
         sender.SENDER.sendGroupMsg(msg, answer);
+    }
+
+    @Filter(value = {".*芦苇今天好看吗"}, at = true)
+    public void cover(GroupMsg groupMsg, MsgSender msgSender) throws IOException {
+        String img = coverImg.getImg();
+        msgSender.SENDER.sendGroupMsg(groupMsg, "既然你这么喜欢我 我就偷偷给你看一眼我的照片");
+        msgSender.SENDER.sendGroupMsg(groupMsg, cqCodeUtil.getCQCode_Image(System.getProperty("user.dir") + "\\image\\" + img).toString());
     }
 
 
@@ -254,5 +266,6 @@ public class AllGroupListener {
         sendStr.append("请使用IDM进行下载");
         sender.SENDER.sendGroupMsg(msg, sendStr.toString());
     }
+
 
 }

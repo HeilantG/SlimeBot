@@ -62,6 +62,36 @@ public class ImgDownload {
         return uuid + imgFormat;
     }
 
+    public String download(String imgUrl, String path, String uuid, String imgFormat) {
+        if (path == null) {
+            path = System.getProperty("user.dir") + "\\image\\";
+        }
+        String localUrl = "";
+        try {
+            URL url = new URL(imgUrl);
+            URLConnection connection = new URL(imgUrl).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            InputStream inputStream = connection.getInputStream();
+            //String b = DigestUtils.md5Hex(inputStream).toUpperCase();
+            //打开网络输入流
+            DataInputStream dis = new DataInputStream(url.openStream());
+            //建立一个新的文件
+            localUrl = path + uuid + imgFormat;
+            FileOutputStream fos = new FileOutputStream(new File(localUrl));
+            byte[] buffer1 = new byte[1024];
+            int length;
+            //开始填充数据
+            while ((length = dis.read(buffer1)) > 0) {
+                fos.write(buffer1, 0, length);
+            }
+            dis.close();
+            fos.close();
+        } catch (Exception e) {
+        }
+        return uuid + imgFormat;
+    }
+
 
     /**
      * 分享图片下载
