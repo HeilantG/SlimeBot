@@ -13,7 +13,10 @@
 
 后台使用的是[光年后台管理模板](https://gitee.com/yinqi/Light-Year-Admin-Using-Iframe)
 
-# 她现在有了新名字
+# 她现在有了新名字以及一张好看的照片
+
+<img src=".github/luwei.jpg" width="200"/>
+
 *芦苇* 那么谁是又是芦苇呢? 你可以[点这里](https://zh.moegirl.org.cn/%E8%8A%A6%E8%8B%87%E5%A8%98(AcFun))
 # 目前功能
 
