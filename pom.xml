@@ -22,7 +22,7 @@
         <mod-delay-task>1.0-1.11</mod-delay-task>
         <mybatis-spring-boot-starter>2.1.1</mybatis-spring-boot-starter>
         <component-mirai-spring-boot-starter>1.15.0</component-mirai-spring-boot-starter>
-        <jsoup>1.13.1</jsoup>
+        <jsoup>1.14.2</jsoup>
     </properties>
 
     <dependencies>
